@@ -20,26 +20,26 @@ import socket
 import locale
 from time import strftime
 from ctypes import c_char_p, c_int, Structure, cast, c_void_p, CDLL, POINTER
-from PySide import *
+from PySide2 import *
 from configparser import ConfigParser
 from io import StringIO
-from user_interface.XRDPConfiguratorMainWindow import Ui_XRDPConfigurator
-from user_interface.LoginWindowSimulator import Ui_LoginWindowSimulator
-from user_interface.SessionFrame import Ui_sessionConfigForm
-from user_interface.PreviewWindow import Ui_PreviewWindow
-from user_interface.NewSession import Ui_NewSession
-from user_interface.About import Ui_About
-from user_interface.AreYouSure import Ui_AreYouSure
-from user_interface.InfoWindow import Ui_InfoWindow
-from user_interface.LogoCustomization import Ui_LogoCustomization
-from user_interface.ImageImport import Ui_ImageImport
-from user_interface.dialogSize import Ui_dialogSize
-from user_interface.logoPosition import Ui_logoPosition
-from user_interface.labelsAndBoxes import Ui_labelsAndBoxes
-from user_interface.DialogButtons import Ui_DialogButtonsCustomizationForm
+from userInterface.XRDPConfiguratorMainWindow import Ui_XRDPConfigurator
+from userInterface.LoginWindowSimulator import Ui_LoginWindowSimulator
+from userInterface.SessionFrame import Ui_sessionConfigForm
+from userInterface.PreviewWindow import Ui_PreviewWindow
+from userInterface.NewSession import Ui_NewSession
+from userInterface.About import Ui_About
+from userInterface.AreYouSure import Ui_AreYouSure
+from userInterface.InfoWindow import Ui_InfoWindow
+from userInterface.LogoCustomization import Ui_LogoCustomization
+from userInterface.ImageImport import Ui_ImageImport
+from userInterface.dialogSize import Ui_dialogSize
+from userInterface.logoPosition import Ui_logoPosition
+from userInterface.labelsAndBoxes import Ui_labelsAndBoxes
+from userInterface.DialogButtons import Ui_DialogButtonsCustomizationForm
 
 
-class BoxShades(QtGui.QGraphicsItemGroup):
+class BoxShades(QtWidgets.QGraphicsItemGroup):
     # Draws shade lines for the dialog boxes in the Login Window Simulator.
     # Enables easy moving and resizing.
     def __init__(self, parent, boxlength=210, xpos=200, ypos=200):
@@ -53,31 +53,31 @@ class BoxShades(QtGui.QGraphicsItemGroup):
         pen_width = 1
         pen = QtGui.QPen(QtGui.QColor(128, 128, 128))
         pen.setWidth(pen_width)
-        self.topline = QtGui.QGraphicsLineItem(parent=parent)
+        self.topline = QtWidgets.QGraphicsLineItem(parent=parent)
         self.topline.setPen(pen)
         self.topline.setParentItem(parent)
 
         pen = QtGui.QPen(QtGui.QColor(0, 0, 0))
         pen.setWidth(pen_width)
-        self.topline2 = QtGui.QGraphicsLineItem(parent=parent)
+        self.topline2 = QtWidgets.QGraphicsLineItem(parent=parent)
         self.topline2.setPen(pen)
 
         pen = QtGui.QPen(QtGui.QColor(128, 128, 128))
         pen.setWidth(pen_width)
-        self.leftline = QtGui.QGraphicsLineItem(parent=parent)
+        self.leftline = QtWidgets.QGraphicsLineItem(parent=parent)
         self.leftline.setPen(pen)
 
         pen = QtGui.QPen(QtGui.QColor(0, 0, 0))
         pen.setWidth(pen_width)
-        self.leftline2 = QtGui.QGraphicsLineItem(parent=parent)
+        self.leftline2 = QtWidgets.QGraphicsLineItem(parent=parent)
         self.leftline2.setPen(pen)
 
         pen = QtGui.QPen(QtGui.QColor(255, 255, 255))
         pen.setWidth(pen_width)
-        self.bottomline = QtGui.QGraphicsLineItem()
+        self.bottomline = QtWidgets.QGraphicsLineItem()
         self.bottomline.setPen(pen)
 
-        self.rightline = QtGui.QGraphicsLineItem(parent=parent)
+        self.rightline = QtWidgets.QGraphicsLineItem(parent=parent)
         self.rightline.setPen(pen)
 
         self.position(xpos, ypos, boxlength)
@@ -99,9 +99,9 @@ class BoxShades(QtGui.QGraphicsItemGroup):
         self.rightline.setPos(x_amount, y_amount)
 
 
-class LoginWindowSimulator(QtGui.QDialog, Ui_LoginWindowSimulator):
+class LoginWindowSimulator(QtWidgets.QDialog, Ui_LoginWindowSimulator):
     def __init__(self, parent, f=QtCore.Qt.WindowFlags()):
-        QtGui.QDialog.__init__(self, parent, f)
+        QtWidgets.QDialog.__init__(self, parent, f)
         self.setupUi(self)
 
     resized = QtCore.Signal(QtGui.QResizeEvent)
@@ -110,73 +110,73 @@ class LoginWindowSimulator(QtGui.QDialog, Ui_LoginWindowSimulator):
         self.resized.emit(event)
 
 
-class ColourWidget(QtGui.QColorDialog):
+class ColourWidget(QtWidgets.QColorDialog):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QColorDialog.__init__(self, parent, f)
+        QtWidgets.QColorDialog.__init__(self, parent, f)
 
 
-class LabelsAndBoxesWidget(QtGui.QWidget, Ui_labelsAndBoxes):
+class LabelsAndBoxesWidget(QtWidgets.QWidget, Ui_labelsAndBoxes):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QWidget.__init__(self, parent, f)
+        QtWidgets.QWidget.__init__(self, parent, f)
         self.setupUi(self)
 
 
-class DialogButtonsCustomizationWidget(QtGui.QDialog, Ui_DialogButtonsCustomizationForm):
+class DialogButtonsCustomizationWidget(QtWidgets.QDialog, Ui_DialogButtonsCustomizationForm):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QDialog.__init__(self, parent, f)
+        QtWidgets.QDialog.__init__(self, parent, f)
         self.setupUi(self)
 
 
-class ImageImport(QtGui.QDialog, Ui_ImageImport):
+class ImageImport(QtWidgets.QDialog, Ui_ImageImport):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QDialog.__init__(self, parent, f)
-        self.setupUi(self)
-        self.setWindowIcon(QtGui.QPixmap(":/icons/images/icons/XRDPConfiguratorWindowIcon.png"))
-
-
-class LogoCustomizationWidget(QtGui.QDialog, Ui_LogoCustomization):
-    def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QDialog.__init__(self, parent, f)
+        QtWidgets.QDialog.__init__(self, parent, f)
         self.setupUi(self)
         self.setWindowIcon(QtGui.QPixmap(":/icons/images/icons/XRDPConfiguratorWindowIcon.png"))
 
 
-class DialogSizeWidget(QtGui.QWidget, Ui_dialogSize):
+class LogoCustomizationWidget(QtWidgets.QDialog, Ui_LogoCustomization):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QWidget.__init__(self, parent, f)
+        QtWidgets.QDialog.__init__(self, parent, f)
+        self.setupUi(self)
+        self.setWindowIcon(QtGui.QPixmap(":/icons/images/icons/XRDPConfiguratorWindowIcon.png"))
+
+
+class DialogSizeWidget(QtWidgets.QWidget, Ui_dialogSize):
+    def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
+        QtWidgets.QWidget.__init__(self, parent, f)
         self.setupUi(self)
 
 
-class LogoPositionWidget(QtGui.QWidget, Ui_logoPosition):
+class LogoPositionWidget(QtWidgets.QWidget, Ui_logoPosition):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QWidget.__init__(self, parent, f)
+        QtWidgets.QWidget.__init__(self, parent, f)
         self.setupUi(self)
 
 
 # This form fills in the Session Tabs...
-class sessionConfigForm(QtGui.QWidget, Ui_sessionConfigForm):
+class sessionConfigForm(QtWidgets.QWidget, Ui_sessionConfigForm):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QWidget.__init__(self, parent, f)
+        QtWidgets.QWidget.__init__(self, parent, f)
         self.setupUi(self)
 
 
-class PreviewWindow(QtGui.QDialog, Ui_PreviewWindow):
+class PreviewWindow(QtWidgets.QDialog, Ui_PreviewWindow):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QDialog.__init__(self, parent, f)
+        QtWidgets.QDialog.__init__(self, parent, f)
         self.setupUi(self)
 
 
 # New session pop-up window...
-class NewSession(QtGui.QDialog, Ui_NewSession):
+class NewSession(QtWidgets.QDialog, Ui_NewSession):
     def __init__(self, parent=None, f=QtCore.Qt.WindowFlags()):
-        QtGui.QDialog.__init__(self, parent, f)
+        QtWidgets.QDialog.__init__(self, parent, f)
         self.setupUi(self)
 
 
 # The About window...
-class AboutWindow(QtGui.QDialog, Ui_About):
+class AboutWindow(QtWidgets.QDialog, Ui_About):
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        QtWidgets.QDialog.__init__(self, parent)
         self.setupUi(self)
         self.buttonBox.accepted.connect(self.accept)
         cprfile = QtCore.QFile(":/html/html/copyright.html")
@@ -186,7 +186,7 @@ class AboutWindow(QtGui.QDialog, Ui_About):
         self.textBrowser.setText(str(copyright_text))
 
 # The Are You Sure You Want To Quit window...
-class AreYouSure(QtGui.QDialog, Ui_AreYouSure):
+class AreYouSure(QtWidgets.QDialog, Ui_AreYouSure):
     def __init__(self, text):
         super(AreYouSure, self).__init__()
         self.setupUi(self)
@@ -196,7 +196,7 @@ class AreYouSure(QtGui.QDialog, Ui_AreYouSure):
 
 
 # A generic Information window...
-class InfoWindow(QtGui.QDialog, Ui_InfoWindow):
+class InfoWindow(QtWidgets.QDialog, Ui_InfoWindow):
     def __init__(self, text):
         super(InfoWindow, self).__init__()
         self.setupUi(self)
@@ -206,30 +206,30 @@ class InfoWindow(QtGui.QDialog, Ui_InfoWindow):
 
 
 # This class defines the Login Window Dialog item group
-class LoginWindowGroup(QtGui.QGraphicsItemGroup):
+class LoginWindowGroup(QtWidgets.QGraphicsItemGroup):
     def __init__(self, restrict_rect, parent=None):
-        QtGui.QGraphicsItemGroup.__init__(self, parent)
-        self.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        QtWidgets.QGraphicsItemGroup.__init__(self, parent)
+        self.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.setHandlesChildEvents(False)
         # Prevent the loginwindow from being moved out of the display area
         self.restrict_rect = restrict_rect
 
     def mouseMoveEvent(self, event):
         if self.restrict_rect.contains(event.scenePos()):
-            QtGui.QGraphicsItemGroup.mouseMoveEvent(self, event)
+            QtWidgets.QGraphicsItemGroup.mouseMoveEvent(self, event)
 
 
 # Used for both Login Dialog labels and Boxes
-class LoginWindowGenericGroup(QtGui.QGraphicsItemGroup):
+class LoginWindowGenericGroup(QtWidgets.QGraphicsItemGroup):
     def __init__(self, parent=None):
-        QtGui.QGraphicsItemGroup.__init__(self, parent)
-        self.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        QtWidgets.QGraphicsItemGroup.__init__(self, parent)
+        self.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.setHandlesChildEvents(False)
 
 
 # Used for displaying resize arrow and logo pixmaps
 # Adds clicked moved and released signals to a QLabel, which normally it doesn't have.
-class ClickableQLabel(QtGui.QLabel):
+class ClickableQLabel(QtWidgets.QLabel):
     def __init__(self, image, parent=None):
         super(ClickableQLabel, self).__init__(parent)
         self.setPixmap(image)
@@ -250,16 +250,16 @@ class ClickableQLabel(QtGui.QLabel):
 
 
 # This class defines a Login Dialog Window, banner, and shade lines...
-class LoginWindow(QtGui.QWidget):
+class LoginWindow(QtWidgets.QWidget):
     def __init__(self):
         super(LoginWindow, self).__init__()
-        self.loginrect = QtGui.QGraphicsRectItem()
-        self.topline = QtGui.QGraphicsLineItem(self.loginrect)
-        self.leftline = QtGui.QGraphicsLineItem(self.loginrect)
-        self.bottomline = QtGui.QGraphicsLineItem(self.loginrect)
-        self.rightline = QtGui.QGraphicsLineItem(self.loginrect)
-        self.loginbanner = QtGui.QGraphicsRectItem(self.loginrect)
-        self.bannertext = QtGui.QGraphicsTextItem(self.loginrect)
+        self.loginrect = QtWidgets.QGraphicsRectItem()
+        self.topline = QtWidgets.QGraphicsLineItem(self.loginrect)
+        self.leftline = QtWidgets.QGraphicsLineItem(self.loginrect)
+        self.bottomline = QtWidgets.QGraphicsLineItem(self.loginrect)
+        self.rightline = QtWidgets.QGraphicsLineItem(self.loginrect)
+        self.loginbanner = QtWidgets.QGraphicsRectItem(self.loginrect)
+        self.bannertext = QtWidgets.QGraphicsTextItem(self.loginrect)
         self.arrowPixmap = QtGui.QPixmap(":/dragpoint/images/dragpoints/Arrow_bottomright.png")
         self.resizearrow = ClickableQLabel(self.arrowPixmap)
         self.dialog_width = 0
@@ -365,7 +365,7 @@ def getColour(value):
 def verifyXrdpIni(fname):
     in_file = ConfigParser()
     in_file.read(fname)
-    if (in_file.has_section("globals")) and (in_file.has_section("xrdp1")):  # and (file.has_section("channels")):
+    if (in_file.has_section("Globals")) and (in_file.has_section("Channels")):
         return True
     else:
         message_window = InfoWindow(
@@ -386,7 +386,7 @@ def verifySesmanIni(fname):
         return False
 
 
-class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
+class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
     def __init__(self):
         super(XRDPConfigurator, self).__init__()
 
@@ -492,7 +492,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.pass_box_ypos = 0
         self.helpbtn_xpos = 0
         self.helpbtn_ypos = 0
-        self.tab_bar = self.sessionsTab.findChild(QtGui.QTabBar, "qt_tabwidget_tabbar")
+        self.tab_bar = self.sessionsTab.findChild(QtWidgets.QTabBar, "qt_tabwidget_tabbar")
         self.tab_bar.tabMoved[int, int].connect(self.reordersessiontabs)
         self.boxlength = 0
         self.dialog_width = 0
@@ -798,7 +798,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.keymapbrowser.appendPlainText(self.keymappreview.getvalue())
 
     def saveKeymapFile(self):
-        fname = QtGui.QFileDialog.getSaveFileName(self, "Save keymap file as...", self.keymapname, "Ini files (*.ini)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save keymap file as...", self.keymapname, "Ini files (*.ini)")
         if fname[0] != "":
             with open(fname[0], 'w') as keymapfile:
                 keymapfile.writelines(self.keymappreview.getvalue())
@@ -825,143 +825,143 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def listeningaddresschanged(self):
         if self.listeningAddressEntryBox.isModified():
-            if not self.xrdp_ini_file.has_option('globals', 'address'):
-                self.xrdp_ini_file.set('globals', 'address', '0.0.0.0')
-            self.xrdp_ini_file.set('globals', 'address', self.listeningAddressEntryBox.text())
+            if not self.xrdp_ini_file.has_option('Globals', 'address'):
+                self.xrdp_ini_file.set('Globals', 'address', '0.0.0.0')
+            self.xrdp_ini_file.set('Globals', 'address', self.listeningAddressEntryBox.text())
             self.xrdp_changed()
             self.listeningAddressEntryBox.setStyleSheet(self.line_edit_changed_stylesheet)
 
     def listeningportchanged(self):
         if self.listeningPortEntryBox.isModified():
-            if not self.xrdp_ini_file.has_option('globals', 'port'):
-                self.xrdp_ini_file.set('globals', 'port', '3389')
-            self.xrdp_ini_file.set('globals', 'port', self.listeningPortEntryBox.text())
+            if not self.xrdp_ini_file.has_option('Globals', 'port'):
+                self.xrdp_ini_file.set('Globals', 'port', '3389')
+            self.xrdp_ini_file.set('Globals', 'port', self.listeningPortEntryBox.text())
             self.xrdp_changed()
             self.listeningPortEntryBox.setStyleSheet(self.line_edit_changed_stylesheet)
 
     # noinspection PyUnusedLocal
     def maxBppChanged(self, arg):
-        if not self.xrdp_ini_file.has_option('globals', 'max_bpp'):
-            self.xrdp_ini_file.set('globals', 'max_bpp', '24')
-        self.xrdp_ini_file.set('globals', 'max_bpp', self.maxBppComboBox.currentText())
+        if not self.xrdp_ini_file.has_option('Globals', 'max_bpp'):
+            self.xrdp_ini_file.set('Globals', 'max_bpp', '24')
+        self.xrdp_ini_file.set('Globals', 'max_bpp', self.maxBppComboBox.currentText())
         self.xrdp_changed()
         self.maxBppComboBox.setStyleSheet(self.combobox_changed_stylesheet)
 
     # noinspection PyUnusedLocal
     def cryptLevelChanged(self, arg):
-        if not self.xrdp_ini_file.has_option('globals', 'crypt_level'):
-            self.xrdp_ini_file.set('globals', 'crypt_level', 'low')
-        self.xrdp_ini_file.set('globals', 'crypt_level', self.cryptLevelComboBox.currentText())
+        if not self.xrdp_ini_file.has_option('Globals', 'crypt_level'):
+            self.xrdp_ini_file.set('Globals', 'crypt_level', 'low')
+        self.xrdp_ini_file.set('Globals', 'crypt_level', self.cryptLevelComboBox.currentText())
         self.xrdp_changed()
         self.cryptLevelComboBox.setStyleSheet(self.combobox_changed_stylesheet)
 
     def autorunSessionChanged(self, index):
         if index == 0:
-            self.xrdp_ini_file.remove_option('globals', 'autorun')
+            self.xrdp_ini_file.remove_option('Globals', 'autorun')
         if index > 0:
-            if not self.xrdp_ini_file.has_option('globals', 'autorun'):
-                self.xrdp_ini_file.set('globals', 'autorun', '')
-            self.xrdp_ini_file.set('globals', 'autorun', self.autoRunComboBox.currentText())
+            if not self.xrdp_ini_file.has_option('Globals', 'autorun'):
+                self.xrdp_ini_file.set('Globals', 'autorun', '')
+            self.xrdp_ini_file.set('Globals', 'autorun', self.autoRunComboBox.currentText())
         self.xrdp_changed()
         self.autoRunComboBox.setStyleSheet(self.combobox_changed_stylesheet)
 
     def useBitMapCacheChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'bitmap_cache'):
-            self.xrdp_ini_file.set('globals', 'bitmap_cache', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'bitmap_cache'):
+            self.xrdp_ini_file.set('Globals', 'bitmap_cache', 'no')
         if self.useBitMapCacheCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'bitmap_cache', "no")
+            self.xrdp_ini_file.set('Globals', 'bitmap_cache', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'bitmap_cache', "yes")
+            self.xrdp_ini_file.set('Globals', 'bitmap_cache', "yes")
         self.xrdp_changed()
         self.useBitMapCacheCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useBitMapCompChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'bitmap_compression'):
-            self.xrdp_ini_file.set('globals', 'bitmap_compression', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'bitmap_compression'):
+            self.xrdp_ini_file.set('Globals', 'bitmap_compression', 'no')
         if self.useBitMapCompCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'bitmap_compression', "no")
+            self.xrdp_ini_file.set('Globals', 'bitmap_compression', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'bitmap_compression', "yes")
+            self.xrdp_ini_file.set('Globals', 'bitmap_compression', "yes")
         self.xrdp_changed()
         self.useBitMapCompCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useBulkCompChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'bulk_compression'):
-            self.xrdp_ini_file.set('globals', 'bulk_compression', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'bulk_compression'):
+            self.xrdp_ini_file.set('Globals', 'bulk_compression', 'no')
         if self.useBulkCompCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'bulk_compression', "no")
+            self.xrdp_ini_file.set('Globals', 'bulk_compression', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'bulk_compression', "yes")
+            self.xrdp_ini_file.set('Globals', 'bulk_compression', "yes")
         self.xrdp_changed()
         self.useBulkCompCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def enableChannelsChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'channel_code'):
-            self.xrdp_ini_file.set('globals', 'channel_code', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'channel_code'):
+            self.xrdp_ini_file.set('Globals', 'channel_code', 'no')
         if self.enableChannelsCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'channel_code', "0")
+            self.xrdp_ini_file.set('Globals', 'channel_code', "0")
         else:
-            self.xrdp_ini_file.set('globals', 'channel_code', "1")
+            self.xrdp_ini_file.set('Globals', 'channel_code', "1")
         self.xrdp_changed()
         self.enableChannelsCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def forkSessionsChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'fork'):
-            self.xrdp_ini_file.set('globals', 'fork', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'fork'):
+            self.xrdp_ini_file.set('Globals', 'fork', 'no')
         if self.forkSessionsCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'fork', "no")
+            self.xrdp_ini_file.set('Globals', 'fork', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'fork', "yes")
+            self.xrdp_ini_file.set('Globals', 'fork', "yes")
         self.xrdp_changed()
         self.forkSessionsCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def hideLogWindowChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'hidelogwindow'):
-            self.xrdp_ini_file.set('globals', 'hidelogwindow', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'hidelogwindow'):
+            self.xrdp_ini_file.set('Globals', 'hidelogwindow', 'no')
         if self.hideLogWindowCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'hidelogwindow', "no")
+            self.xrdp_ini_file.set('Globals', 'hidelogwindow', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'hidelogwindow', "yes")
+            self.xrdp_ini_file.set('Globals', 'hidelogwindow', "yes")
         self.xrdp_changed()
         self.hideLogWindowCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def tcpNodelayChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'tcp_nodelay'):
-            self.xrdp_ini_file.set('globals', 'tcp_nodelay', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'tcp_nodelay'):
+            self.xrdp_ini_file.set('Globals', 'tcp_nodelay', 'no')
         if self.tcpNoDelayCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'tcp_nodelay', "no")
+            self.xrdp_ini_file.set('Globals', 'tcp_nodelay', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'tcp_nodelay', "yes")
+            self.xrdp_ini_file.set('Globals', 'tcp_nodelay', "yes")
         self.xrdp_changed()
         self.tcpNoDelayCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def tcpKeepaliveChanged(self):
-        if not self.xrdp_ini_file.has_option('globals', 'tcp_keepalive'):
-            self.xrdp_ini_file.set('globals', 'tcp_keepalive', 'no')
+        if not self.xrdp_ini_file.has_option('Globals', 'tcp_keepalive'):
+            self.xrdp_ini_file.set('Globals', 'tcp_keepalive', 'no')
         if self.tcpKeepAliveCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('globals', 'tcp_keepalive', "no")
+            self.xrdp_ini_file.set('Globals', 'tcp_keepalive', "no")
         else:
-            self.xrdp_ini_file.set('globals', 'tcp_keepalive', "yes")
+            self.xrdp_ini_file.set('Globals', 'tcp_keepalive', "yes")
         self.xrdp_changed()
         self.tcpKeepAliveCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def requireCredentialsChanged(self):
         if self.requireCredentialsCheckbox.checkState() == 2:
-            if not self.xrdp_ini_file.has_option('globals', 'require_credentials'):
-                self.xrdp_ini_file.set('globals', 'require_credentials', 'yes')
+            if not self.xrdp_ini_file.has_option('Globals', 'require_credentials'):
+                self.xrdp_ini_file.set('Globals', 'require_credentials', 'yes')
         else:
-            if self.xrdp_ini_file.has_option('globals', 'require_credentials'):
-                self.xrdp_ini_file.remove_option('globals', 'require_credentials')
+            if self.xrdp_ini_file.has_option('Globals', 'require_credentials'):
+                self.xrdp_ini_file.remove_option('Globals', 'require_credentials')
         self.xrdp_changed()
         self.requireCredentialsCheckbox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def allowMultimonChanged(self):
         if self.allowMultimonCheckBox.checkState() == 2:
-            if not self.xrdp_ini_file.has_option('globals', 'allow_multimon'):
-                self.xrdp_ini_file.set('globals', 'allow_multimon', 'true')
+            if not self.xrdp_ini_file.has_option('Globals', 'allow_multimon'):
+                self.xrdp_ini_file.set('Globals', 'allow_multimon', 'true')
         else:
-            if self.xrdp_ini_file.has_option('globals', 'allow_multimon'):
-                self.xrdp_ini_file.remove_option('globals', 'allow_multimon')
+            if self.xrdp_ini_file.has_option('Globals', 'allow_multimon'):
+                self.xrdp_ini_file.remove_option('Globals', 'allow_multimon')
         self.xrdp_changed()
         self.allowMultimonCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
@@ -969,22 +969,22 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         if self.additionalPamErrorTextCheckbox.checkState() == 2:
             self.pamErrorText.setEnabled(True)
             if self.pamErrorText.isModified():
-                self.xrdp_ini_file.set('globals', 'pamerrortxt', self.pamErrorText.text())
+                self.xrdp_ini_file.set('Globals', 'pamerrortxt', self.pamErrorText.text())
                 self.pamErrorText.setStyleSheet(self.line_edit_changed_stylesheet)
                 self.xrdp_changed()
                 self.pamErrorText.setModified(0)
         if self.additionalPamErrorTextCheckbox.checkState() == 0:
             self.pamErrorText.setEnabled(False)
-            if self.xrdp_ini_file.has_option('globals', 'pamerrortxt'):
-                self.xrdp_ini_file.remove_option('globals', 'pamerrortxt')
+            if self.xrdp_ini_file.has_option('Globals', 'pamerrortxt'):
+                self.xrdp_ini_file.remove_option('Globals', 'pamerrortxt')
         self.xrdp_changed()
         self.additionalPamErrorTextCheckbox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def disableNewCursorsChanged(self):
         if self.disableNewCursorsCheckBox.checkState() == 2:
-            self.xrdp_ini_file.set('globals', 'new_cursors', 'no')
+            self.xrdp_ini_file.set('Globals', 'new_cursors', 'no')
         else:
-            self.xrdp_ini_file.set('globals', 'new_cursors', 'yes')
+            self.xrdp_ini_file.set('Globals', 'new_cursors', 'yes')
         self.xrdp_changed()
         self.disableNewCursorsCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
@@ -999,11 +999,11 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         # @param index: the number/id/index of the tab in question
         # @param secname: the section name
         global original_port_setting
-        sessionport_widget = self.sessionsTab.widget(index).findChild(QtGui.QLineEdit, "sessionPortEntryBox")
-        chansrvport_widget = self.sessionsTab.widget(index).findChild(QtGui.QLineEdit, "chansrvPortEntryBox")
-        sessionport_label_widget = self.sessionsTab.widget(index).findChild(QtGui.QLabel, "sessionport_label")
-        chansrvport_label_widget = self.sessionsTab.widget(index).findChild(QtGui.QLabel, "chansrvport_label")
-        checkbox = self.sessionsTab.widget(index).findChild(QtGui.QCheckBox, "debugXRDPCheckbox")
+        sessionport_widget = self.sessionsTab.widget(index).findChild(QtWidgets.QLineEdit, "sessionPortEntryBox")
+        chansrvport_widget = self.sessionsTab.widget(index).findChild(QtWidgets.QLineEdit, "chansrvPortEntryBox")
+        sessionport_label_widget = self.sessionsTab.widget(index).findChild(QtWidgets.QLabel, "sessionport_label")
+        chansrvport_label_widget = self.sessionsTab.widget(index).findChild(QtWidgets.QLabel, "chansrvport_label")
+        checkbox = self.sessionsTab.widget(index).findChild(QtWidgets.QCheckBox, "debugXRDPCheckbox")
         if checkbox.checkState() == 0:
             if self.xrdp_ini_file.has_option(secname, 'chansrvport'):
                 self.xrdp_ini_file.remove_option(secname, 'chansrvport')
@@ -1081,62 +1081,62 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
     # CHANNELS - Click/change event handlers...
 
     def useRdpDrChanged(self):
-        if not self.xrdp_ini_file.has_option('channels', 'rdpdr'):
-            self.xrdp_ini_file.set('channels', 'rdpdr', '0')
+        if not self.xrdp_ini_file.has_option('Channels', 'rdpdr'):
+            self.xrdp_ini_file.set('Channels', 'rdpdr', '0')
         if self.useRdpDrCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('channels', 'rdpdr', "0")
+            self.xrdp_ini_file.set('Channels', 'rdpdr', "0")
         else:
-            self.xrdp_ini_file.set('channels', 'rdpdr', "true")
+            self.xrdp_ini_file.set('Channels', 'rdpdr', "true")
         self.xrdp_changed()
         self.useRdpDrCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useRdpSndChanged(self):
-        if not self.xrdp_ini_file.has_option('channels', 'rdpsnd'):
-            self.xrdp_ini_file.set('channels', 'rdpsnd', '0')
+        if not self.xrdp_ini_file.has_option('Channels', 'rdpsnd'):
+            self.xrdp_ini_file.set('Channels', 'rdpsnd', '0')
         if self.useRdpSndCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('channels', 'rdpsnd', "0")
+            self.xrdp_ini_file.set('Channels', 'rdpsnd', "0")
         else:
-            self.xrdp_ini_file.set('channels', 'rdpsnd', "true")
+            self.xrdp_ini_file.set('Channels', 'rdpsnd', "true")
         self.xrdp_changed()
         self.useRdpSndCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useDrDynVcChanged(self):
-        if not self.xrdp_ini_file.has_option('channels', 'drdynvc'):
-            self.xrdp_ini_file.set('channels', 'drdynvc', '0')
+        if not self.xrdp_ini_file.has_option('Channels', 'drdynvc'):
+            self.xrdp_ini_file.set('Channels', 'drdynvc', '0')
         if self.useDrDynVcCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('channels', 'drdynvc', "0")
+            self.xrdp_ini_file.set('Channels', 'drdynvc', "0")
         else:
-            self.xrdp_ini_file.set('channels', 'drdynvc', "true")
+            self.xrdp_ini_file.set('Channels', 'drdynvc', "true")
         self.xrdp_changed()
         self.useDrDynVcCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useClipRdrChanged(self):
-        if not self.xrdp_ini_file.has_option('channels', 'cliprdr'):
-            self.xrdp_ini_file.set('channels', 'cliprdr', '0')
+        if not self.xrdp_ini_file.has_option('Channels', 'cliprdr'):
+            self.xrdp_ini_file.set('Channels', 'cliprdr', '0')
         if self.useClipRdrCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('channels', 'cliprdr', "0")
+            self.xrdp_ini_file.set('Channels', 'cliprdr', "0")
         else:
-            self.xrdp_ini_file.set('channels', 'cliprdr', "true")
+            self.xrdp_ini_file.set('Channels', 'cliprdr', "true")
         self.xrdp_changed()
         self.useClipRdrCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useRAILChanged(self):
-        if not self.xrdp_ini_file.has_option('channels', 'rail'):
-            self.xrdp_ini_file.set('channels', 'rail', '0')
+        if not self.xrdp_ini_file.has_option('Channels', 'rail'):
+            self.xrdp_ini_file.set('Channels', 'rail', '0')
         if self.useRAILCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('channels', 'rail', "0")
+            self.xrdp_ini_file.set('Channels', 'rail', "0")
         else:
-            self.xrdp_ini_file.set('channels', 'rail', "true")
+            self.xrdp_ini_file.set('Channels', 'rail', "true")
         self.xrdp_changed()
         self.useRAILCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
     def useXrdpVrChanged(self):
-        if not self.xrdp_ini_file.has_option('channels', 'xrdpvr'):
-            self.xrdp_ini_file.set('channels', 'xrdpvr', '0')
+        if not self.xrdp_ini_file.has_option('Channels', 'xrdpvr'):
+            self.xrdp_ini_file.set('Channels', 'xrdpvr', '0')
         if self.useXrdpVrCheckBox.checkState() == 0:
-            self.xrdp_ini_file.set('channels', 'xrdpvr', "0")
+            self.xrdp_ini_file.set('Channels', 'xrdpvr', "0")
         else:
-            self.xrdp_ini_file.set('channels', 'xrdpvr', "true")
+            self.xrdp_ini_file.set('Channels', 'xrdpvr', "true")
         self.xrdp_changed()
         self.useXrdpVrCheckBox.setStyleSheet(self.checkbox_changed_stylesheet)
 
@@ -1147,10 +1147,10 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             new_sesssion_name = self.newsesswindow.newSessionName.displayText()
             self.createsessionstab(new_sesssion_name)
             self.addSessionName(tab_index, new_sesssion_name)
-            self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, 'enableOverridesCheckBox').clicked.connect(self.sessionOverridesEventHandler)
-            self.sessionsTab.widget(tab_index).findChild(QtGui.QComboBox, 'serverbppcombobox').currentIndexChanged.connect(self.sessionbppcomboboxchanged)
+            self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, 'enableOverridesCheckBox').clicked.connect(self.sessionOverridesEventHandler)
+            self.sessionsTab.widget(tab_index).findChild(QtWidgets.QComboBox, 'serverbppcombobox').currentIndexChanged.connect(self.sessionbppcomboboxchanged)
             section_name = "xrdp" + str(tab_index + 1)
-            self.sessionsTab.widget(tab_index).findChild(QtGui.QLabel, 'sessionSectionName').setText("[" + section_name + "]")
+            self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLabel, 'sessionSectionName').setText("[" + section_name + "]")
             # set default values for new session according to connection type...
             index = self.newsesswindow.connectionTypeComboBox.currentIndex()
 
@@ -1294,7 +1294,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
     def reordersessiontabs(self, idx_from, *idx_to):
         if idx_to == ():
             return
-        debugcheckbox = self.sessionsTab.widget(1).findChild(QtGui.QCheckBox, "debugXRDPCheckbox")
+        debugcheckbox = self.sessionsTab.widget(1).findChild(QtWidgets.QCheckBox, "debugXRDPCheckbox")
         tab_count = self.sessionsTab.count()
         if tab_count < 1:
             return
@@ -1326,8 +1326,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             self.xrdp_ini_file.set(xrdp_to, item[0], item[1])
 
         # step 6 - update sessionsTab with new section names...
-        self.sessionsTab.widget(idx_from).findChild(QtGui.QLabel, "sessionSectionName").setText("[" + xrdp_from + "]")
-        self.sessionsTab.widget(idx_to[0]).findChild(QtGui.QLabel, "sessionSectionName").setText("[" + xrdp_to + "]")
+        self.sessionsTab.widget(idx_from).findChild(QtWidgets.QLabel, "sessionSectionName").setText("[" + xrdp_from + "]")
+        self.sessionsTab.widget(idx_to[0]).findChild(QtWidgets.QLabel, "sessionSectionName").setText("[" + xrdp_to + "]")
 
         # step 7 - handle the debug checkbox stuff...
 
@@ -1336,7 +1336,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             self.xrdp_debug_checkbox.clicked.disconnect(self.debugClicked)
             debugcheckbox.setStyleSheet("")
             debugcheckbox.setVisible(False)
-            self.xrdp_debug_checkbox = self.sessionsTab.widget(0).findChild(QtGui.QCheckBox, "debugXRDPCheckbox")
+            self.xrdp_debug_checkbox = self.sessionsTab.widget(0).findChild(QtWidgets.QCheckBox, "debugXRDPCheckbox")
             self.xrdp_debug_checkbox.clicked.connect(self.debugClicked)
             self.xrdp_debug_checkbox.setVisible(True)
 
@@ -1347,7 +1347,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             self.debugHandler(1, "xrdp2")
             debugcheckbox.setStyleSheet("")
             debugcheckbox.setVisible(False)
-            self.xrdp_debug_checkbox = self.sessionsTab.widget(0).findChild(QtGui.QCheckBox, "debugXRDPCheckbox")
+            self.xrdp_debug_checkbox = self.sessionsTab.widget(0).findChild(QtWidgets.QCheckBox, "debugXRDPCheckbox")
             self.xrdp_debug_checkbox.clicked.connect(self.debugClicked)
             self.xrdp_debug_checkbox.setVisible(True)
             self.xrdp_debug_checkbox.setCheckState(QtCore.Qt.CheckState.Checked)
@@ -1365,8 +1365,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.resequenceINI()
 
         # Also set AutoRun combobox index if autorun has been selected...
-        if self.xrdp_ini_file.has_option('globals', 'autorun'):
-            autorun_text = self.xrdp_ini_file.get('globals', 'autorun')
+        if self.xrdp_ini_file.has_option('Globals', 'autorun'):
+            autorun_text = self.xrdp_ini_file.get('Globals', 'autorun')
             for index in range(0, self.autoRunComboBox.count()):
                 self.autoRunComboBox.setCurrentIndex(index)
                 if autorun_text in self.autoRunComboBox.currentText():
@@ -1416,7 +1416,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                 for item in items:
                     self.xrdp_ini_file.set(new_sesname, item[0], item[1])
                 self.xrdp_ini_file.remove_section(old_sesname)
-                self.sessionsTab.widget(sesnum).findChild(QtGui.QLabel, 'sessionSectionName').setText(
+                self.sessionsTab.widget(sesnum).findChild(QtWidgets.QLabel, 'sessionSectionName').setText(
                     "[" + new_sesname + "]")
             if index == 0:
                 self.setXrdpCheckboxVisibility()
@@ -1532,7 +1532,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             message_window.exec_()
 
     def fileSaveXrdpIniAs(self):
-        fname = QtGui.QFileDialog.getSaveFileName(self, "Save file as...", "xrdp.ini", "Ini files (*.ini)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save file as...", "xrdp.ini", "Ini files (*.ini)")
         if fname[0] != "":
             config = self.ConfigFileGenerator("xrdp.ini")
             self.xrdp_ini_file.write(config, space_around_delimiters=False)
@@ -1549,7 +1549,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                 message_window.exec_()
 
     def fileSaveSesmanIniAs(self):
-        fname = QtGui.QFileDialog.getSaveFileName(self, "Save file as...", "sesman.ini", "Ini files (*.ini)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self, "Save file as...", "sesman.ini", "Ini files (*.ini)")
         if fname[0] != "":
             config = self.ConfigFileGenerator("sesman.ini")
             self.sesman_ini_file.write(config, space_around_delimiters=False)
@@ -1587,9 +1587,9 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                 "<html><head/><body><p>You have unsaved changes.</p><p>Are you sure you want to quit?</p></body></html>")
             result = quit_window.exec_()
             if result == 1:
-                QtGui.qApp.quit()
+                QtWidgets.qApp.quit()
         else:
-            QtGui.qApp.quit()
+            exit()
 
     # User wants to open xrdp.ini
     def fileOpenXrdpIni(self):
@@ -1601,7 +1601,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         else:
             result = 1
         if result == 1:
-            filename = QtGui.QFileDialog.getOpenFileName(self, "Open xrdp.ini file...", "xrdp.ini", "Ini files (*.ini)")
+            filename = QtWidgets.QFileDialog.getOpenFileName(self, "Open xrdp.ini file...", "xrdp.ini", "Ini files (*.ini)")
             if filename[0] != "" and verifyXrdpIni(filename) is True:
                 self.new_version_flag = 0
                 self.xrdp_ini_filename = filename[0]
@@ -1631,7 +1631,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         else:
             result = 1
         if result == 1:
-            filename = QtGui.QFileDialog.getOpenFileName(self, "Open sesman.ini file...", "sesman.ini",
+            filename = QtWidgets.QFileDialog.getOpenFileName(self, "Open sesman.ini file...", "sesman.ini",
                                                          "Ini files (*.ini)")
             if filename[0] != "":
                 if verifySesmanIni(filename[0]):
@@ -1666,13 +1666,13 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def tabUserPasswordToggle(self, tabID, makeVisible):
         section_name = "xrdp" + str(tabID + 1)
-        lib_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QComboBox, "libraryComboBox")
+        lib_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QComboBox, "libraryComboBox")
         if not lib_widget:
             return
-        username_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QLabel, "label_4")
-        username_entrybox = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionUserNameEntryBox")
-        password_label = self.sessionsTab.widget(tabID).findChild(QtGui.QLabel, "label_8")
-        password_entrybox = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionPasswordEntryBox")
+        username_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLabel, "label_4")
+        username_entrybox = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionUserNameEntryBox")
+        password_label = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLabel, "label_8")
+        password_entrybox = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionPasswordEntryBox")
         if makeVisible == 0:
             username_widget.setVisible(False)
             username_entrybox.setVisible(False)
@@ -1701,7 +1701,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
     # noinspection PyUnusedLocal
     def tabLibraryComboBoxChanged(self, arg):
         tabID = self.sessionsTab.currentIndex()
-        lib_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QComboBox, "libraryComboBox")
+        lib_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QComboBox, "libraryComboBox")
         library = ""
         section = "xrdp" + str(tabID + 1)
         index = lib_widget.currentIndex()
@@ -1731,7 +1731,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
     # noinspection PyUnusedLocal
     def sessionbppcomboboxchanged(self, arg):
         tabID = self.sessionsTab.currentIndex()
-        widget = self.sessionsTab.widget(tabID).findChild(QtGui.QComboBox, 'serverbppcombobox')
+        widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QComboBox, 'serverbppcombobox')
         section = "xrdp" + str(tabID + 1)
         index = widget.currentIndex()
         if index != 0:
@@ -1744,7 +1744,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def sessionNameBoxChanged(self):
         tabID = self.sessionsTab.currentIndex()
-        sessname_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionNameBox")
+        sessname_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionNameBox")
         if not sessname_widget:
             return
         if sessname_widget.isModified():
@@ -1754,16 +1754,16 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             self.autoRunComboBox.setItemText((tabID + 1), name)
             self.simmodulebox.setItemText(tabID, name)  # Login sim list
             self.xrdp_ini_file.set(section, "name", name)
-            if self.xrdp_ini_file.has_option('globals', 'autorun'):
-                if self.xrdp_ini_file.get('globals', 'autorun') != name:
-                    self.xrdp_ini_file.set('globals', 'autorun', name)
+            if self.xrdp_ini_file.has_option('Globals', 'autorun'):
+                if self.xrdp_ini_file.get('Globals', 'autorun') != name:
+                    self.xrdp_ini_file.set('Globals', 'autorun', name)
             sessname_widget.setStyleSheet(self.line_edit_changed_stylesheet)
             self.xrdp_changed()
             sessname_widget.setModified(0)
 
     def sessionIPAddressChanged(self):
         tabID = self.sessionsTab.currentIndex()
-        sess_ip_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionIPAddress")
+        sess_ip_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionIPAddress")
         if not sess_ip_widget:
             return
         if sess_ip_widget.isModified():
@@ -1776,7 +1776,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def sessionPortBoxChanged(self):
         tabID = self.sessionsTab.currentIndex()
-        sess_port_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionPortEntryBox")
+        sess_port_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionPortEntryBox")
         if sess_port_widget is None:
             return
         if sess_port_widget.isModified():
@@ -1789,7 +1789,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def sessionUsernameBoxChanged(self):
         tabID = self.sessionsTab.currentIndex()
-        sess_username_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionUserNameEntryBox")
+        sess_username_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionUserNameEntryBox")
         if sess_username_widget is None:
             return
         if sess_username_widget.isModified():
@@ -1802,7 +1802,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def sessionPasswordBoxChanged(self):
         tabID = self.sessionsTab.currentIndex()
-        sess_password_widget = self.sessionsTab.widget(tabID).findChild(QtGui.QLineEdit, "sessionPasswordEntryBox")
+        sess_password_widget = self.sessionsTab.widget(tabID).findChild(QtWidgets.QLineEdit, "sessionPasswordEntryBox")
         if sess_password_widget is None:
             return
         if sess_password_widget.isModified():
@@ -1818,7 +1818,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         #listIndex = 0
         tabID = self.sessionsTab.currentIndex()
         section = "xrdp" + str(tabID + 1)
-        enable_overrides = self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, 'enableOverridesCheckBox')
+        enable_overrides = self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, 'enableOverridesCheckBox')
         channelsFrame = self.sessionsTab.widget(tabID).findChild(QtGui.QFrame, 'channelsFrame')
         # If we can't find the Enable Overrides checkbox then give up...
         if enable_overrides is None:
@@ -1848,12 +1848,12 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             # then set the tick state of each tick box, then update the override array to suit...
             if not self.xrdp_ini_file.has_option(section, session_channel_name):
                 # Get the enabled/disabled state of each of the global channel settings...
-                global_channel_state = self.xrdp_ini_file.get('channels', globals_channel_name)
+                global_channel_state = self.xrdp_ini_file.get('Channels', globals_channel_name)
                 # set the INI file's corresponding  session override to be the same...
                 self.xrdp_ini_file.set(section, session_channel_name, global_channel_state)
                 # set the overridearray list to reflect that...
                 self.sessionOverrideChannelState(section, tabID, session_channel_name, checkbox_name)
-                session_channel_tickbox_state = self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, checkbox_name).checkState()
+                session_channel_tickbox_state = self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, checkbox_name).checkState()
                 if session_channel_tickbox_state == 2:
                     self.overridearray[tabID][listIndex] = 2
                 elif session_channel_tickbox_state == 0:
@@ -1861,7 +1861,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             else:
                 # If the channel override option is already in the INI file, then look at the option, and
                 # tick or untick the relevent checkbox...
-                session_channel_tickbox = self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, checkbox_name)
+                session_channel_tickbox = self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, checkbox_name)
                 session_channel_tickbox_state = int(session_channel_tickbox.checkState())
                 override_array_state = self.overridearray[tabID][listIndex]
                 if session_channel_tickbox_state == 2:
@@ -1890,9 +1890,9 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                 # Remove the channel override option from the section...
                 self.xrdp_ini_file.remove_option(section, session_channel_name)
                 # Untick the corresponding tickbox...
-                self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, checkbox_name).setCheckState(QtCore.Qt.CheckState(0))
+                self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, checkbox_name).setCheckState(QtCore.Qt.CheckState(0))
                 # Set the corresponding tickboxe's stylesheet back to its default...
-                self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, checkbox_name).setStyleSheet("")
+                self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, checkbox_name).setStyleSheet("")
                 # set the value of the channel overrides array to the checked/unchecked value...
                 self.overridearray[tabID][listIndex] = 0
                 self.sessions_channel_override_active_list[tabID] = 0
@@ -1900,9 +1900,9 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def sessionOverrideChannelState(self, section, tabID, channel, checkbox):
         if self.xrdp_ini_file.get(section, channel) == '0':
-            self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, checkbox).setCheckState(QtCore.Qt.CheckState(0))
+            self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, checkbox).setCheckState(QtCore.Qt.CheckState(0))
         if self.xrdp_ini_file.get(section, channel) == 'true':
-            self.sessionsTab.widget(tabID).findChild(QtGui.QCheckBox, checkbox).setCheckState(QtCore.Qt.CheckState(2))
+            self.sessionsTab.widget(tabID).findChild(QtWidgets.QCheckBox, checkbox).setCheckState(QtCore.Qt.CheckState(2))
 
     # We keep tabs (heh cwutididthar!) on which session has Enable Channel Overrides ticked or unticked.
     # @param tab_index: The index/id of the session's tab being updated
@@ -1911,15 +1911,15 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         if option == "add":
             self.sessions_channel_override_active_list.append([])
             # Update the list of sessions with channel overrides - to be used when checking old value if user clicks checkbox...
-            if self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+            if self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                             "enableOverridesCheckBox").checkState() == 2:
                 self.sessions_channel_override_active_list[tab_index] = 1
             else:
                 self.sessions_channel_override_active_list[tab_index] = 0
-            self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, 'enableOverridesCheckBox').clicked.connect(
+            self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, 'enableOverridesCheckBox').clicked.connect(
                 self.sessionOverridesEventHandler)
         if option == "update":
-            overridescheckbox = self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, 'enableOverridesCheckBox')
+            overridescheckbox = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, 'enableOverridesCheckBox')
             if overridescheckbox.checkState() == 2:
                 self.sessions_channel_override_active_list[tab_index] = 1
             else:
@@ -1935,12 +1935,12 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         # For each channel in the CHANNEL_LIST array...
         for override_channel_name in self.CHANNEL_LIST:
             # Find the widget with that channel name...
-            widget = self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, override_channel_name)
+            widget = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, override_channel_name)
             if widget.checkState() == 2:
                 self.overridearray[tab_index].append(2)
             else:
                 self.overridearray[tab_index].append(0)
-            self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, override_channel_name).clicked.connect(
+            self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, override_channel_name).clicked.connect(
                 self.sessionOverridesEventHandler)
 
     # ###END OF SESSIONS EVENT HANDLERS###
@@ -1970,34 +1970,34 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
         pen = QtGui.QPen(QtGui.QColor(128, 128, 128))
         pen.setWidth(pen_width)
-        topline = QtGui.QGraphicsLineItem(parent=parent_widget)
+        topline = QtWidgets.QGraphicsLineItem(parent=parent_widget)
         topline.setPen(pen)
         topline.setLine(xpos, ypos, xpos + boxlength, ypos)
 
         pen = QtGui.QPen(QtGui.QColor(0, 0, 0))
         pen.setWidth(1)
-        topline2 = QtGui.QGraphicsLineItem(parent=parent_widget)
+        topline2 = QtWidgets.QGraphicsLineItem(parent=parent_widget)
         topline2.setPen(pen)
         topline2.setLine(xpos + 1, ypos + 1, xpos + boxlength - 1, ypos + 1)
 
         pen = QtGui.QPen(QtGui.QColor(128, 128, 128))
         pen.setWidth(1)
-        leftline = QtGui.QGraphicsLineItem(parent=parent_widget)
+        leftline = QtWidgets.QGraphicsLineItem(parent=parent_widget)
         leftline.setPen(pen)
         leftline.setLine(xpos, ypos, xpos, ypos + 17)
 
         pen = QtGui.QPen(QtGui.QColor(0, 0, 0))
         pen.setWidth(1)
-        leftline2 = QtGui.QGraphicsLineItem(parent=parent_widget)
+        leftline2 = QtWidgets.QGraphicsLineItem(parent=parent_widget)
         leftline2.setPen(pen)
         leftline2.setLine(xpos + 1, ypos + 1, xpos + 1, ypos + 1 + 17)
 
-        bottomline = QtGui.QGraphicsLineItem(parent=parent_widget)
+        bottomline = QtWidgets.QGraphicsLineItem(parent=parent_widget)
         pen = QtGui.QPen(QtGui.QColor(255, 255, 255))
         bottomline.setPen(pen)
         bottomline.setLine(xpos, ypos + 18, xpos + boxlength, ypos + 18)
 
-        rightline = QtGui.QGraphicsLineItem(parent=parent_widget)
+        rightline = QtWidgets.QGraphicsLineItem(parent=parent_widget)
         rightline.setPen(pen)
         rightline.setLine(xpos + boxlength, ypos, xpos + boxlength, ypos + 18)
 
@@ -2087,66 +2087,67 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             modtext = "Session"
             self.winSim.DialogGroupBox.setVisible(True)
 
-            if self.xrdp_ini_file.has_option('globals', 'ls_input_width'):
-                self.boxlength = int(self.xrdp_ini_file.get('globals', 'ls_input_width'))
-            if self.xrdp_ini_file.has_option('globals', 'ls_width'):
-                self.dialog_width = int(self.xrdp_ini_file.get('globals', 'ls_width'))
-            if self.xrdp_ini_file.has_option('globals', 'ls_height'):
-                self.dialog_height = int(self.xrdp_ini_file.get('globals', 'ls_height'))
-            if self.xrdp_ini_file.has_option('globals', 'ls_label_x_pos'):
-                self.mod_text_xpos = int(self.xrdp_ini_file.get('globals', 'ls_label_x_pos'))
-                self.mod_text_ypos = int(self.xrdp_ini_file.get('globals', 'ls_input_y_pos'))
+            if self.xrdp_ini_file.has_option('Globals', 'ls_input_width'):
+                self.boxlength = int(self.xrdp_ini_file.get('Globals', 'ls_input_width'))
+            if self.xrdp_ini_file.has_option('Globals', 'ls_width'):
+                self.dialog_width = int(self.xrdp_ini_file.get('Globals', 'ls_width'))
+            if self.xrdp_ini_file.has_option('Globals', 'ls_height'):
+                self.dialog_height = int(self.xrdp_ini_file.get('Globals', 'ls_height'))
+            if self.xrdp_ini_file.has_option('Globals', 'ls_label_x_pos'):
+                self.mod_text_xpos = int(self.xrdp_ini_file.get('Globals', 'ls_label_x_pos'))
+                self.mod_text_ypos = int(self.xrdp_ini_file.get('Globals', 'ls_input_y_pos'))
                 self.updateDialogCalculateLabelBoxesPositions()
-            if self.xrdp_ini_file.has_option('globals', 'ls_btn_ok_x_pos'):
-                self.okbtn_xpos = int(self.xrdp_ini_file.get('globals', 'ls_btn_ok_x_pos'))
-                self.okbtn_ypos = int(self.xrdp_ini_file.get('globals', 'ls_btn_ok_y_pos'))
-                self.okbtn_width = int(self.xrdp_ini_file.get('globals', 'ls_btn_ok_width'))
-                self.okbtn_height = int(self.xrdp_ini_file.get('globals', 'ls_btn_ok_height'))
-                self.cancelbtn_xpos = int(self.xrdp_ini_file.get('globals', 'ls_btn_cancel_x_pos'))
-                self.cancelbtn_ypos = int(self.xrdp_ini_file.get('globals', 'ls_btn_cancel_y_pos'))
-                self.cancelbtn_width = int(self.xrdp_ini_file.get('globals', 'ls_btn_cancel_width'))
-                self.cancelbtn_height = int(self.xrdp_ini_file.get('globals', 'ls_btn_cancel_height'))
-            if self.xrdp_ini_file.has_option('globals', 'ls_logo_x_pos'):
-                self.logo_xpos = int(self.xrdp_ini_file.get('globals', 'ls_logo_x_pos'))
-                self.logo_ypos = int(self.xrdp_ini_file.get('globals', 'ls_logo_y_pos'))
-                self.logo_filename = self.xrdp_ini_file.get('globals', 'ls_logo_filename')
+            if self.xrdp_ini_file.has_option('Globals', 'ls_btn_ok_x_pos'):
+                self.okbtn_xpos = int(self.xrdp_ini_file.get('Globals', 'ls_btn_ok_x_pos'))
+                self.okbtn_ypos = int(self.xrdp_ini_file.get('Globals', 'ls_btn_ok_y_pos'))
+                self.okbtn_width = int(self.xrdp_ini_file.get('Globals', 'ls_btn_ok_width'))
+                self.okbtn_height = int(self.xrdp_ini_file.get('Globals', 'ls_btn_ok_height'))
+                self.cancelbtn_xpos = int(self.xrdp_ini_file.get('Globals', 'ls_btn_cancel_x_pos'))
+                self.cancelbtn_ypos = int(self.xrdp_ini_file.get('Globals', 'ls_btn_cancel_y_pos'))
+                self.cancelbtn_width = int(self.xrdp_ini_file.get('Globals', 'ls_btn_cancel_width'))
+                self.cancelbtn_height = int(self.xrdp_ini_file.get('Globals', 'ls_btn_cancel_height'))
+            if self.xrdp_ini_file.has_option('Globals', 'ls_logo_x_pos'):
+                self.logo_xpos = int(self.xrdp_ini_file.get('Globals', 'ls_logo_x_pos'))
+                self.logo_ypos = int(self.xrdp_ini_file.get('Globals', 'ls_logo_y_pos'))
+                self.logo_filename = self.xrdp_ini_file.get('Globals', 'ls_logo_filename')
         else:
             self.winSim.DialogGroupBox.setVisible(False)
 
         # WINSIM Set up the view and scene for the login window area...
-        self.simscene = QtGui.QGraphicsScene()
+        self.simscene = QtWidgets.QGraphicsScene()
         self.simscene.setSceneRect(QtCore.QRectF(self.winSim.xrdp_window.viewport().rect()))
         self.winSim.resized.connect(self.winSimResized)
         self.winSim.xrdp_window.setScene(self.simscene)
-        self.winSim.xrdp_window.setRenderHints(QtGui.QPainter.CompositionMode_Destination)
+        #self.begin(this)
+        self.winSim.xrdp_window.setRenderHint(QtGui.QPainter.Antialiasing, True)
         self.winSim.xrdp_window.scale(1, 1)
 
         # these views are for the various colour "swatches"...
-        self.simbackgroundscene = QtGui.QGraphicsScene()
+        self.simbackgroundscene = QtWidgets.QGraphicsScene()
         self.simbackgroundscene.setSceneRect(QtCore.QRectF(self.winSim.backgroundView.viewport().rect()))
         self.winSim.backgroundView.setScene(self.simbackgroundscene)
 
-        self.simwindowscene = QtGui.QGraphicsScene()
+        self.simwindowscene = QtWidgets.QGraphicsScene()
         self.simwindowscene.setSceneRect(QtCore.QRectF(self.winSim.windowView.viewport().rect()))
         self.winSim.windowView.setScene(self.simwindowscene)
 
-        self.simtitleBgndscene = QtGui.QGraphicsScene()
+        self.simtitleBgndscene = QtWidgets.QGraphicsScene()
         self.simtitleBgndscene.setSceneRect(QtCore.QRectF(self.winSim.titleBgndView.viewport().rect()))
         self.winSim.titleBgndView.setScene(self.simtitleBgndscene)
 
-        self.simtextscene = QtGui.QGraphicsScene()
+        self.simtextscene = QtWidgets.QGraphicsScene()
         self.simtextscene.setSceneRect(QtCore.QRectF(self.winSim.textView.viewport().rect()))
         self.winSim.textView.setScene(self.simtextscene)
 
-        self.simboxesscene = QtGui.QGraphicsScene()
+        self.simboxesscene = QtWidgets.QGraphicsScene()
         self.simboxesscene.setSceneRect(QtCore.QRectF(self.winSim.boxesView.viewport().rect()))
         self.winSim.boxesView.setScene(self.simboxesscene)
 
-        self.simbotRightscene = QtGui.QGraphicsScene()
+        self.simbotRightscene = QtWidgets.QGraphicsScene()
         self.simbotRightscene.setSceneRect(QtCore.QRectF(self.winSim.botRightView.viewport().rect()))
         self.winSim.botRightView.setScene(self.simbotRightscene)
 
-        self.simdarkBluescene = QtGui.QGraphicsScene()
+        self.simdarkBluescene = QtWidgets.QGraphicsScene()
         self.simdarkBluescene.setSceneRect(QtCore.QRectF(self.winSim.darkBlueView.viewport().rect()))
         self.winSim.darkBlueView.setScene(self.simdarkBluescene)
 
@@ -2180,7 +2181,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.winSim.botRightView.setBackgroundBrush(QtGui.QBrush(QtGui.QColor(128, 128, 128)))
 
         # Create the Module/Session text
-        self.simmoduletext = QtGui.QGraphicsTextItem(parent=self.simnewloginrect)
+        self.simmoduletext = QtWidgets.QGraphicsTextItem(parent=self.simnewloginrect)
         self.simmoduletext.setFont(font)
         self.simmoduletext.setDefaultTextColor(QtGui.QColor(0, 0, 0))
         self.simmoduletext.setPlainText(modtext)
@@ -2188,13 +2189,13 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.winSim.textView.setBackgroundBrush(brush)
 
         # Create the "username" text
-        self.simusernametext = QtGui.QGraphicsTextItem(parent=self.simnewloginrect)
+        self.simusernametext = QtWidgets.QGraphicsTextItem(parent=self.simnewloginrect)
         self.simusernametext.setFont(font)
         self.simusernametext.setDefaultTextColor(QtGui.QColor(0, 0, 0))
         self.simusernametext.setPlainText("username")
 
         # Create the "password" text
-        self.simpasswordtext = QtGui.QGraphicsTextItem(parent=self.simnewloginrect)
+        self.simpasswordtext = QtWidgets.QGraphicsTextItem(parent=self.simnewloginrect)
         self.simpasswordtext.setFont(font)
         self.simpasswordtext.setDefaultTextColor(QtGui.QColor(0, 0, 0))
         self.simpasswordtext.setPlainText("password")
@@ -2213,7 +2214,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                     'background: ' + boxes + '; ' \
                     'padding: 0px; ' \
                     '} '
-        self.simusernamebox = QtGui.QLineEdit()
+        self.simusernamebox = QtWidgets.QLineEdit()
         self.simusernamebox.setFrame(False)
         self.simusernamebox.setFont(font)
         self.simusernamebox.setStyleSheet(stylesheet)
@@ -2226,12 +2227,12 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simlogin_window_group.addToGroup(self.simuserShading)
 
         # Add a text entry box for "password"...
-        self.simpassbox = QtGui.QLineEdit()
+        self.simpassbox = QtWidgets.QLineEdit()
         self.simpassbox.setGeometry(
             QtCore.QRect(self.pass_box_xpos + 2, self.pass_box_ypos + 2, self.boxlength - 1, 13))
         self.simpassbox.setFrame(False)
         self.simpassbox.setFont(font)
-        self.simpassbox.setEchoMode(QtGui.QLineEdit.Password)
+        self.simpassbox.setEchoMode(QtWidgets.QLineEdit.Password)
         stylesheet = 'QLineEdit { ' \
                      'lineedit-password-character: 42;' \
                      'color: ' + textcolour + '; ' \
@@ -2248,61 +2249,61 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simlogin_window_group.addToGroup(self.simpassShading)
 
         # Add an OK button...
-        self.simokbtn = QtGui.QPushButton()
-        self.simokbtn.setStyle(QtGui.QStyleFactory.create("windows"))
+        self.simokbtn = QtWidgets.QPushButton()
+        self.simokbtn.setStyle(QtWidgets.QStyleFactory.create("windows"))
         self.simokbtn.setGeometry(self.okbtn_xpos, self.okbtn_ypos, self.okbtn_width, self.okbtn_height)
         self.simokbtn.setFont(font)
         self.simokbtn.setText("OK")
         self.simokbtn.setAutoFillBackground(True)
 
-        #        self.okbottomline = QtGui.QGraphicsLineItem()
+        #        self.okbottomline = QtWidgets.QGraphicsLineItem()
         #        self.okbottomline.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0)))
         #        self.okbottomline.setLine(self.x_pos + 279, self.y_pos + 210 + self.button_height, self.x_pos + 279 + self.button_length, self.y_pos + 210 + self.button_height)
         #        self.login_window_group.addToGroup(self.okbottomline)
-        #        self.okrightline = QtGui.QGraphicsLineItem()
+        #        self.okrightline = QtWidgets.QGraphicsLineItem()
         #        self.okrightline.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0)))
         #        self.okrightline.setLine(self.x_pos + 279 + self.button_length, self.y_pos + 210 + self.button_height, self.x_pos + 279 + self.button_length, self.y_pos + 210)
         #        self.login_window_group.addToGroup(self.okrightline)
 
         # Add a Cancel button...
-        self.simcancelbtn = QtGui.QPushButton()
-        self.simcancelbtn.setStyle(QtGui.QStyleFactory.create("windows"))
+        self.simcancelbtn = QtWidgets.QPushButton()
+        self.simcancelbtn.setStyle(QtWidgets.QStyleFactory.create("windows"))
         self.simcancelbtn.setGeometry(self.cancelbtn_xpos, self.cancelbtn_ypos, self.cancelbtn_width,
                                       self.cancelbtn_height)
         self.simcancelbtn.setFont(font)
         self.simcancelbtn.setText("Cancel")
         self.simcancelbtn.setAutoFillBackground(True)
 
-        #        self.cancelbottomline = QtGui.QGraphicsLineItem()
+        #        self.cancelbottomline = QtWidgets.QGraphicsLineItem()
         #        self.cancelbottomline.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0)))
         #        self.cancelbottomline.setLine(self.x_pos + 348, self.y_pos + 210 + self.button_height, self.x_pos + 348 + self.button_length, self.y_pos + 210 + self.button_height)
         #        self.login_window_group.addToGroup(self.cancelbottomline)
-        #        self.cancelrightline = QtGui.QGraphicsLineItem()
+        #        self.cancelrightline = QtWidgets.QGraphicsLineItem()
         #        self.cancelrightline.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0)))
         #        self.cancelrightline.setLine(self.x_pos + 348 + self.button_length, self.y_pos + 210 + self.button_height, self.x_pos + 348 + self.button_length, self.y_pos + 210)
         #        self.login_window_group.addToGroup(self.cancelrightline)
 
         # Add a Help button...
         if not self.new_version_flag:
-            self.simhelpbtn = QtGui.QPushButton()
-            self.simhelpbtn.setStyle(QtGui.QStyleFactory.create("windows"))
+            self.simhelpbtn = QtWidgets.QPushButton()
+            self.simhelpbtn.setStyle(QtWidgets.QStyleFactory.create("windows"))
             self.simhelpbtn.setGeometry(self.helpbtn_xpos, self.okbtn_ypos, self.okbtn_width, self.okbtn_height)
             self.simhelpbtn.setFont(font)
             self.simhelpbtn.setText("Help")
             self.simhelpbtn.setAutoFillBackground(True)
 
-        #        self.helpbottomline = QtGui.QGraphicsLineItem()
+        #        self.helpbottomline = QtWidgets.QGraphicsLineItem()
         #        self.helpbottomline.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0)))
         #        self.helpbottomline.setLine(self.x_pos + 418, self.y_pos + 210 + self.button_height, self.x_pos + 418 + self.button_length, self.y_pos + 210 + self.button_height)
         #        self.login_window_group.addToGroup(self.helpbottomline)
-        #        self.helprightline = QtGui.QGraphicsLineItem()
+        #        self.helprightline = QtWidgets.QGraphicsLineItem()
         #        self.helprightline.setPen(QtGui.QPen(QtGui.QColor(0, 0, 0)))
         #        self.helprightline.setLine(self.x_pos + 418 + self.button_length, self.y_pos + 210 + self.button_height, self.x_pos + 418 + self.button_length, self.y_pos + 210)
         #        self.login_window_group.addToGroup(self.helprightline)
 
         # Add a combobox to represent the menu...
-        self.simmodulebox = QtGui.QComboBox()
-        self.simmodulebox.setStyle(QtGui.QStyleFactory.create("windows"))
+        self.simmodulebox = QtWidgets.QComboBox()
+        self.simmodulebox.setStyle(QtWidgets.QStyleFactory.create("windows"))
         self.simmodulebox.setGeometry(
             QtCore.QRect(self.mod_box_xpos + 2, self.mod_box_ypos + 2, self.boxlength - 4, 16))
         self.simmodulebox.setFixedWidth(self.boxlength)
@@ -2351,7 +2352,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         # load the "main" xrdp bitmap if old INI version...
         if not self.new_version_flag:
             self.simlogo, scene_width, scene_height, l_width, l_height = self.loadMainLogo(self.simscene)
-            self.simlogodisplayer = QtGui.QGraphicsPixmapItem(self.simlogo)
+            self.simlogodisplayer = QtWidgets.QGraphicsPixmapItem(self.simlogo)
             self.simlogodisplayer.setPos(scene_width - l_width, scene_height - l_height)
             self.simscene.addItem(self.simlogodisplayer)
 
@@ -2395,7 +2396,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.resizeDialog.heightSpinBox.valueChanged.connect(self.windowDialogResizeUpdate)
         self.winSim.DialogGroupBox.setEnabled(False)
         self.winSim.ColoursGroupBox.setEnabled(False)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, False)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, False)
         self.winSim.resizeDialogBtn.setStyleSheet(self.colourbutton_stylesheet)
         self.simloginwindow.resizeVisible()
         self.simscene.addWidget(self.resizeDialog)
@@ -2460,15 +2461,15 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                                              self.orig_dialog_width, self.orig_dialog_height)
         self.dialog_width = self.orig_dialog_width
         self.dialog_height = self.orig_dialog_height
-        self.xrdp_ini_file.set('globals', 'ls_width', str(self.dialog_width))
-        self.xrdp_ini_file.set('globals', 'ls_height', str(self.dialog_height))
+        self.xrdp_ini_file.set('Globals', 'ls_width', str(self.dialog_width))
+        self.xrdp_ini_file.set('Globals', 'ls_height', str(self.dialog_height))
         self.loginGroupRemoveItems(self.simlogin_window_group, self.simgroupitems)
         self.loginGroupAddItems(self.simlogin_window_group, self.simgroupitems)
         self.simloginwindow.resizeInvisible()
         self.resizeDialog.deleteLater()
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.resizeDialogBtn.setStyleSheet("")
         self.simwinlogo.blockSignals(False)
 
@@ -2479,15 +2480,15 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                                              self.rubberBand.width(), self.rubberBand.height())
         self.dialog_width = self.resizeDialog.widthSpinBox.value()
         self.dialog_height = self.resizeDialog.heightSpinBox.value()
-        self.xrdp_ini_file.set('globals', 'ls_width', str(self.dialog_width))
-        self.xrdp_ini_file.set('globals', 'ls_height', str(self.dialog_height))
+        self.xrdp_ini_file.set('Globals', 'ls_width', str(self.dialog_width))
+        self.xrdp_ini_file.set('Globals', 'ls_height', str(self.dialog_height))
         self.loginGroupRemoveItems(self.simlogin_window_group, self.simgroupitems)
         self.loginGroupAddItems(self.simlogin_window_group, self.simgroupitems)
         self.simloginwindow.resizeInvisible()
         self.resizeDialog.deleteLater()
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.resizeDialogBtn.setStyleSheet("")
         self.simwinlogo.blockSignals(False)
         self.xrdp_changed()
@@ -2518,7 +2519,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
         if self.new_version_flag:
             winlogo.setGeometry(self.logo_xpos, self.logo_ypos, winlogo_pixmap.width(), winlogo_pixmap.height())
-            self.xrdp_ini_file.set('globals', 'ls_logo_filename', filename)
+            self.xrdp_ini_file.set('Globals', 'ls_logo_filename', filename)
         else:
             winlogo.setGeometry(x + 10, y + 30, winlogo_pixmap.width(), winlogo_pixmap.height())
 
@@ -2544,7 +2545,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simwinlogo.moved.connect(self.windowlogoPositionMove)
         self.winSim.DialogGroupBox.setEnabled(False)
         self.winSim.ColoursGroupBox.setEnabled(False)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, False)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, False)
         self.winSim.logoPositionBtn.setStyleSheet(self.colourbutton_stylesheet)
 
     def windowLogoPositionInitialClick(self, event):
@@ -2567,13 +2568,13 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.logoPosDialog.xSpinBox.blockSignals(False)
 
     def windowlogoPositionAccepted(self):
-        self.xrdp_ini_file.set('globals', 'ls_logo_x_pos', str(self.simwinlogo.x()))
-        self.xrdp_ini_file.set('globals', 'ls_logo_y_pos', str(self.simwinlogo.y()))
+        self.xrdp_ini_file.set('Globals', 'ls_logo_x_pos', str(self.simwinlogo.x()))
+        self.xrdp_ini_file.set('Globals', 'ls_logo_y_pos', str(self.simwinlogo.y()))
         self.logoPosDialog.deleteLater()
         self.simwinlogo.clicked.connect(self.windowLogoClicked)
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.logoPositionBtn.setStyleSheet("")
         self.xrdp_changed()
 
@@ -2583,7 +2584,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.logoPosDialog.deleteLater()
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.logoPositionBtn.setStyleSheet("")
 
     # noinspection PyUnusedLocal
@@ -2643,8 +2644,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.importImageForm.importLogoBtn.clicked.connect(self.windowLogoImport)
         self.importImageForm.switchToImportedLogoBtn.clicked.connect(self.windowLogoSwitchToImported)
         self.importImageForm.switchToImportedLogoBtn.setVisible(False)
-        self.increaseBtn = self.importImageForm.imageStatusStackedWidget.findChild(QtGui.QPushButton, 'increaseImageBtn')
-        self.decreaseBtn = self.importImageForm.imageStatusStackedWidget.findChild(QtGui.QPushButton, 'decreaseImageBtn')
+        self.increaseBtn = self.importImageForm.imageStatusStackedWidget.findChild(QtWidgets.QPushButton, 'increaseImageBtn')
+        self.decreaseBtn = self.importImageForm.imageStatusStackedWidget.findChild(QtWidgets.QPushButton, 'decreaseImageBtn')
         self.increaseBtn.clicked.connect(self.windowLogoUpscaleImage)
         self.decreaseBtn.clicked.connect(self.windowLogoDownscaleImage)
         self.importImageForm.saveImportedImageBtn.clicked.connect(self.windowLogoSaveImportedImage)
@@ -2662,7 +2663,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         del self.importImageForm
 
     def windowLogoSelectFromFile(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self.customizeLogoForm, "Select logo image file...",
+        filename = QtWidgets.QFileDialog.getOpenFileName(self.customizeLogoForm, "Select logo image file...",
                                                      os.path.dirname(self.logo_filename) + "/*.BMP",
                                                      "BMP files (*.BMP)")
         if filename[0] != "":
@@ -2681,11 +2682,11 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         return status
 
     def windowLogoImport(self):
-        wdgt = self.customizeLogoForm.findChild(QtGui.QLabel, 'importedDisplayer')
+        wdgt = self.customizeLogoForm.findChild(QtWidgets.QLabel, 'importedDisplayer')
         if wdgt is not None:
             wdgt.setParent(None)
             del wdgt
-        importedDisplayer = QtGui.QLabel(self.importImageForm)
+        importedDisplayer = QtWidgets.QLabel(self.importImageForm)
         importedDisplayer.setObjectName('importedDisplayer')
         importedDisplayer.setStyleSheet('QLabel {'
                                         'border: 3px; '
@@ -2693,7 +2694,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                                         '}')
         import_image = QtGui.QImage()
         importedDisplayer.setVisible(False)
-        filename = QtGui.QFileDialog.getOpenFileName(self.importImageForm, "Select an image file to import...", "", "Image Files (*.bmp *.png *.jpg)")[0]
+        filename = QtWidgets.QFileDialog.getOpenFileName(self.importImageForm, "Select an image file to import...", "", "Image Files (*.bmp *.png *.jpg)")[0]
         if filename != "":
             import_image.load(filename)
             if import_image.hasAlphaChannel():
@@ -2755,7 +2756,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.windowLogoSetImportPixmap(newformat_image)
 
     def windowLogoSaveImportedImage(self):
-        fname = QtGui.QFileDialog.getSaveFileName(self.importImageForm, "Save imported file as...", "", "BMP files (*.BMP)")
+        fname = QtWidgets.QFileDialog.getSaveFileName(self.importImageForm, "Save imported file as...", "", "BMP files (*.BMP)")
         if fname[0] != "":
             try:
                 self.import_pixmap.save(fname[0], 'BMP')
@@ -2778,7 +2779,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def windowDialogButtonsCustBtnClicked(self):
         # Stop the Dialog Window from being moved
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, False)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, False)
 
         # Save a copy of the button's Position and Size
         self.orig_ok_btn_position = self.simokbtn.pos()
@@ -2871,7 +2872,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
         self.winSim.DialogGroupBox.setEnabled(False)
         self.winSim.ColoursGroupBox.setEnabled(False)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, False)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, False)
         self.winSim.buttonsLocationBtn.setStyleSheet(self.colourbutton_stylesheet)
 
         # Connect spinbox value changed signals
@@ -2916,7 +2917,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simcancelbtn.setMaximumHeight(self.cancelbtn_height)
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.buttonsLocationBtn.setStyleSheet("")
 
     def windowDialogButtonsOKClicked(self):
@@ -2924,14 +2925,14 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.okbtn_ypos = self.btnDialog.ok_y_spinBox.value()
         self.cancelbtn_xpos = self.btnDialog.cancel_x_spinBox.value()
         self.cancelbtn_ypos = self.btnDialog.cancel_y_spinBox.value()
-        self.xrdp_ini_file.set('globals', 'ls_btn_ok_x_pos', str(self.okbtn_xpos))
-        self.xrdp_ini_file.set('globals', 'ls_btn_ok_y_pos', str(self.okbtn_ypos))
-        self.xrdp_ini_file.set('globals', 'ls_btn_ok_width', str(self.okbtn_width))
-        self.xrdp_ini_file.set('globals', 'ls_btn_ok_height', str(self.okbtn_height))
-        self.xrdp_ini_file.set('globals', 'ls_btn_cancel_x_pos', str(self.cancelbtn_xpos))
-        self.xrdp_ini_file.set('globals', 'ls_btn_cancel_y_pos', str(self.cancelbtn_ypos))
-        self.xrdp_ini_file.set('globals', 'ls_btn_cancel_width', str(self.cancelbtn_width))
-        self.xrdp_ini_file.set('globals', 'ls_btn_cancel_height', str(self.cancelbtn_height))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_ok_x_pos', str(self.okbtn_xpos))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_ok_y_pos', str(self.okbtn_ypos))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_ok_width', str(self.okbtn_width))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_ok_height', str(self.okbtn_height))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_cancel_x_pos', str(self.cancelbtn_xpos))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_cancel_y_pos', str(self.cancelbtn_ypos))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_cancel_width', str(self.cancelbtn_width))
+        self.xrdp_ini_file.set('Globals', 'ls_btn_cancel_height', str(self.cancelbtn_height))
         self.btnDialog.deleteLater()
         self.okBtnPosArrow.deleteLater()
         self.OkBtnSizeArrow.deleteLater()
@@ -2939,7 +2940,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.cancelBtnSizeArrow.deleteLater()
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.buttonsLocationBtn.setStyleSheet("")
         self.xrdp_changed()
 
@@ -3199,7 +3200,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def windowDialogBoxesBtnClicked(self):
         # Stop the Dialog Window from being moved
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, False)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, False)
         # save a copy of the original modulebox text & box positions
         self.orig_mod_text_xpos = self.mod_text_xpos
         self.orig_mod_box_xpos = self.mod_box_xpos
@@ -3267,7 +3268,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         # Disable the buttons at the top of the LWS (prevent user activating other functions)
         self.winSim.DialogGroupBox.setEnabled(False)
         self.winSim.ColoursGroupBox.setEnabled(False)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, False)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, False)
         self.winSim.boxesLocationBtn.setStyleSheet(self.colourbutton_stylesheet)
 
     # This is for when the LABELS are being moved.
@@ -3469,16 +3470,16 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 #        self.labelsArrow.move(xpos, self.initial_labelsarrow_y)
 
     def windowDialogBoxesAccepted(self):
-        self.xrdp_ini_file.set('globals', 'ls_label_x_pos', str(self.mod_text_xpos))
-        self.xrdp_ini_file.set('globals', 'ls_input_y_pos', str(self.mod_box_ypos))
-        self.xrdp_ini_file.set('globals', 'ls_input_x_pos', str(self.mod_box_xpos))
-        self.xrdp_ini_file.set('globals', 'ls_input_width', str(self.boxlength))
+        self.xrdp_ini_file.set('Globals', 'ls_label_x_pos', str(self.mod_text_xpos))
+        self.xrdp_ini_file.set('Globals', 'ls_input_y_pos', str(self.mod_box_ypos))
+        self.xrdp_ini_file.set('Globals', 'ls_input_x_pos', str(self.mod_box_xpos))
+        self.xrdp_ini_file.set('Globals', 'ls_input_width', str(self.boxlength))
         self.labelsArrow.deleteLater()
         self.boxes_XY_Arrow.deleteLater()
         self.boxesDialog.deleteLater()
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.boxesLocationBtn.setStyleSheet("")
         self.xrdp_changed()
 
@@ -3495,7 +3496,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.boxesDialog.deleteLater()
         self.winSim.DialogGroupBox.setEnabled(True)
         self.winSim.ColoursGroupBox.setEnabled(True)
-        self.simlogin_window_group.setFlag(QtGui.QGraphicsItemGroup.ItemIsMovable, True)
+        self.simlogin_window_group.setFlag(QtWidgets.QGraphicsItemGroup.ItemIsMovable, True)
         self.winSim.boxesLocationBtn.setStyleSheet("")
 
     def updateDialogCalculateLabelsPositions(self):
@@ -3713,7 +3714,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.colour_chooser.setStyleSheet("background-color: rgba(255,255,255, 60%);")
         self.colour_chooser.hide()
         self.colour_chooser.setWindowFlags(QtCore.Qt.Widget)
-        self.colour_chooser.setOptions(QtGui.QColorDialog.DontUseNativeDialog)
+        self.colour_chooser.setOptions(QtWidgets.QColorDialog.DontUseNativeDialog)
         self.colour_chooser.setAttribute(QtCore.Qt.WA_DontShowOnScreen, True)
 
     def hideColourSelector(self, colourUpdater, accepted, rejected, finished):
@@ -3789,9 +3790,9 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.enableButtons()
         if self.new_version_flag:
             colour = self.colour_chooser.currentColor().name()[1:]
-            self.xrdp_ini_file.set('globals', 'ls_top_window_bg_color', colour)
+            self.xrdp_ini_file.set('Globals', 'ls_top_window_bg_color', colour)
         else:
-            self.xrdp_ini_file.set('globals', 'background', str(self.colour_chooser.currentColor().name()[1:]))
+            self.xrdp_ini_file.set('Globals', 'background', str(self.colour_chooser.currentColor().name()[1:]))
         self.hideColourSelector(self.selectBackgroundUpdater, self.selectbackgroundaccepted,
                                 self.selectbackgroundcancelled, self.selectbackgroundfinished)
 
@@ -3815,8 +3816,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             colour = QtGui.QColor(0, 0, 0)
         self.winSim.xrdp_window.setBackgroundBrush(colour)
         self.winSim.backgroundView.setBackgroundBrush(colour)
-        if self.xrdp_ini_file.has_option('globals', 'background'):
-            self.xrdp_ini_file.remove_option('globals', 'background')
+        if self.xrdp_ini_file.has_option('Globals', 'background'):
+            self.xrdp_ini_file.remove_option('Globals', 'background')
         self.xrdp_changed()
 
     def loginSimulatorSelectBlack(self):
@@ -3844,7 +3845,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.winSim.textView.setBackgroundBrush(QtGui.QBrush(colour))
 
     def blackaccepted(self):
-        self.xrdp_ini_file.set('globals', 'black', str(self.colour_chooser.currentColor().name()[1:]))
+        self.xrdp_ini_file.set('Globals', 'black', str(self.colour_chooser.currentColor().name()[1:]))
         self.xrdp_changed()
         self.enableButtons()
         self.hideColourSelector(self.selectBlackUpdater, self.blackaccepted, self.blackrejected, self.blackfinished)
@@ -3877,8 +3878,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.updateButtonStyles()
         self.updateUserPassStylesheet()
         self.winSim.textView.setBackgroundBrush(QtGui.QBrush(colour))
-        if self.xrdp_ini_file.has_option('globals', 'black'):
-            self.xrdp_ini_file.remove_option('globals', 'black')
+        if self.xrdp_ini_file.has_option('Globals', 'black'):
+            self.xrdp_ini_file.remove_option('Globals', 'black')
         self.xrdp_changed()
 
     # "grey=" in the ini file is for the login Window fill colour...
@@ -3902,8 +3903,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def greyaccepted(self):
         if self.new_version_flag:
-            self.xrdp_ini_file.set('globals', 'ls_bg_color', str(self.colour_chooser.currentColor().name()[1:]))
-        self.xrdp_ini_file.set('globals', 'grey', str(self.colour_chooser.currentColor().name()[1:]))
+            self.xrdp_ini_file.set('Globals', 'ls_bg_color', str(self.colour_chooser.currentColor().name()[1:]))
+        self.xrdp_ini_file.set('Globals', 'grey', str(self.colour_chooser.currentColor().name()[1:]))
         self.xrdp_changed()
         self.enableButtons()
         self.hideColourSelector(self.selectGreyUpdater, self.greyaccepted, self.greyrejected, self.greyfinished)
@@ -3932,8 +3933,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.winSim.windowView.setBackgroundBrush(QtGui.QBrush(colour))
         self.updateButtonStyles()
         self.updateModuleStylesheet()
-        if self.xrdp_ini_file.has_option('globals', 'grey'):
-            self.xrdp_ini_file.remove_option('globals', 'grey')
+        if self.xrdp_ini_file.has_option('Globals', 'grey'):
+            self.xrdp_ini_file.remove_option('Globals', 'grey')
         self.xrdp_changed()
 
     # "dark_grey=" is for the Window bottom & right, and "boxes" top & left shade-lines...
@@ -3964,7 +3965,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.updateButtonStyles()
 
     def darkgreyaccepted(self):
-        self.xrdp_ini_file.set('globals', 'dark_grey', str(self.colour_chooser.currentColor().name()[1:]))
+        self.xrdp_ini_file.set('Globals', 'dark_grey', str(self.colour_chooser.currentColor().name()[1:]))
         self.xrdp_changed()
         self.enableButtons()
         self.hideColourSelector(self.selectDarkGreyUpdater, self.darkgreyaccepted, self.darkgreyrejected,
@@ -4007,8 +4008,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simpassShading.leftline.setPen(pen)
         self.winSim.botRightView.setBackgroundBrush(QtGui.QBrush(colour))
         self.updateButtonStyles()
-        if self.xrdp_ini_file.has_option('globals', 'dark_grey'):
-            self.xrdp_ini_file.remove_option('globals', 'dark_grey')
+        if self.xrdp_ini_file.has_option('Globals', 'dark_grey'):
+            self.xrdp_ini_file.remove_option('Globals', 'dark_grey')
         self.xrdp_changed()
 
     # "blue=" is for the "banner" colour...
@@ -4030,7 +4031,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.updateModuleStylesheet()
 
     def blueaccepted(self):
-        self.xrdp_ini_file.set('globals', 'blue', str(self.colour_chooser.currentColor().name()[1:]))
+        self.xrdp_ini_file.set('Globals', 'blue', str(self.colour_chooser.currentColor().name()[1:]))
         self.xrdp_changed()
         self.enableButtons()
         self.hideColourSelector(self.selectBlueUpdater, self.blueaccepted, self.bluerejected, self.bluefinished)
@@ -4057,8 +4058,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simloginwindow.loginbanner.setBrush(QtGui.QColor(colour))
         self.winSim.titleBgndView.setBackgroundBrush(colour)
         self.updateModuleStylesheet()
-        if self.xrdp_ini_file.has_option('globals', 'blue'):
-            self.xrdp_ini_file.remove_option('globals', 'blue')
+        if self.xrdp_ini_file.has_option('Globals', 'blue'):
+            self.xrdp_ini_file.remove_option('Globals', 'blue')
         self.xrdp_changed()
 
     # "dark_blue=" is for the "combobox-focus-background" colour...
@@ -4076,7 +4077,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.winSim.darkBlueView.setBackgroundBrush(QtGui.QBrush(colour))
 
     def darkblueaccepted(self):
-        self.xrdp_ini_file.set('globals', 'dark_blue', str(self.colour_chooser.currentColor().name()[1:]))
+        self.xrdp_ini_file.set('Globals', 'dark_blue', str(self.colour_chooser.currentColor().name()[1:]))
         self.xrdp_changed()
         self.enableButtons()
         self.hideColourSelector(self.selectDarkBlueUpdater, self.darkblueaccepted, self.darkbluerejected,
@@ -4101,8 +4102,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.dark_blue = colour
         self.updateModuleStylesheet()
         self.winSim.darkBlueView.setBackgroundBrush(QtGui.QBrush(colour))
-        if self.xrdp_ini_file.has_option('globals', 'dark_blue'):
-            self.xrdp_ini_file.remove_option('globals', 'dark_blue')
+        if self.xrdp_ini_file.has_option('Globals', 'dark_blue'):
+            self.xrdp_ini_file.remove_option('Globals', 'dark_blue')
         self.xrdp_changed()
 
     # "white=" is for the top & left shade-lines PLUS Banner Text PLUS Module/name/password blocks...
@@ -4140,7 +4141,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.winSim.boxesView.setBackgroundBrush(QtGui.QBrush(colour))
 
     def whiteaccepted(self):
-        self.xrdp_ini_file.set('globals', 'white', str(self.colour_chooser.currentColor().name()[1:]))
+        self.xrdp_ini_file.set('Globals', 'white', str(self.colour_chooser.currentColor().name()[1:]))
         self.xrdp_changed()
         self.enableButtons()
         self.hideColourSelector(self.selectWhiteUpdater, self.whiteaccepted, self.whiterejected, self.whitefinished)
@@ -4188,8 +4189,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.simpassShading.bottomline.setPen(pen)
         self.simpassShading.rightline.setPen(pen)
         self.winSim.boxesView.setBackgroundBrush(QtGui.QBrush(colour))
-        if self.xrdp_ini_file.has_option('globals', 'white'):
-            self.xrdp_ini_file.remove_option('globals', 'white')
+        if self.xrdp_ini_file.has_option('Globals', 'white'):
+            self.xrdp_ini_file.remove_option('Globals', 'white')
         self.xrdp_changed()
 
     #
@@ -4215,7 +4216,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.new_version_flag = 0
         self.listeningAddressEntryBox.setText('127.0.0.1')
         #self.versionDisplayLabel.setText("Editing the old format xrdp.ini...")
-        for name, value in self.xrdp_ini_file.items("globals"):
+        for name, value in self.xrdp_ini_file.items("Globals"):
             # Detect the INI version...
             if name == "ini_version" and value in "1":
                 self.new_version_flag = 1
@@ -4289,8 +4290,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                 self.winSim.darkBlueView.setBackgroundBrush(self.dark_blue)
             elif name == "background":
                 colour = getColour(value)
-                if self.xrdp_ini_file.has_option('globals', 'ls_top_window_bg_color'):
-                    result = self.xrdp_ini_file.get('globals', 'ls_top_window_bg_color')
+                if self.xrdp_ini_file.has_option('Globals', 'ls_top_window_bg_color'):
+                    result = self.xrdp_ini_file.get('Globals', 'ls_top_window_bg_color')
                     colour = QtGui.QColor('#' + result)
                 brush = QtGui.QBrush(colour)
                 brush.setStyle(QtCore.Qt.SolidPattern)
@@ -4408,7 +4409,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         self.xrdp_ini_file.set('Logging', 'sysloglevel', 'DEBUG')
 
     def parseXrdpChannelsSection(self):
-        for name, value in self.xrdp_ini_file.items("channels"):
+        for name, value in self.xrdp_ini_file.items("Channels"):
             if name == "rdpdr" and value in ["1", "true", "yes"]:
                 self.useRdpDrCheckBox.blockSignals(True)
                 self.useRdpDrCheckBox.setCheckState(QtCore.Qt.Checked)
@@ -4435,13 +4436,13 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                 self.useXrdpVrCheckBox.blockSignals(False)
 
     def addDefaultChannelsSection(self):
-        self.xrdp_ini_file.add_section('channels')
-        self.xrdp_ini_file.set('channels', 'rdpdr', 'true')
-        self.xrdp_ini_file.set('channels', 'rdpsnd', 'true')
-        self.xrdp_ini_file.set('channels', 'drdynvc', 'true')
-        self.xrdp_ini_file.set('channels', 'cliprdr', 'true')
-        self.xrdp_ini_file.set('channels', 'rail', 'true')
-        self.xrdp_ini_file.set('channels', 'xrdpvr', 'true')
+        self.xrdp_ini_file.add_section('Channels')
+        self.xrdp_ini_file.set('Channels', 'rdpdr', 'true')
+        self.xrdp_ini_file.set('Channels', 'rdpsnd', 'true')
+        self.xrdp_ini_file.set('Channels', 'drdynvc', 'true')
+        self.xrdp_ini_file.set('Channels', 'cliprdr', 'true')
+        self.xrdp_ini_file.set('Channels', 'rail', 'true')
+        self.xrdp_ini_file.set('Channels', 'xrdpvr', 'true')
 
     # Parse and Create tabs for each of the Sessions...
 
@@ -4450,7 +4451,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
     # This will be called for any session which becomes "[xrdp1]"
     # It enables the "Debug xrdp" checkbox for that particular session
     def setXrdpCheckboxVisibility(self):
-        self.xrdp_debug_checkbox = self.sessionsTab.widget(0).findChild(QtGui.QCheckBox, 'debugXRDPCheckbox')
+        self.xrdp_debug_checkbox = self.sessionsTab.widget(0).findChild(QtWidgets.QCheckBox, 'debugXRDPCheckbox')
         self.xrdp_debug_checkbox.setVisible(True)
         self.xrdp_debug_checkbox.clicked.connect(self.debugClicked)
 
@@ -4459,9 +4460,9 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     def addSessionName(self, tab_index, value):
         section_name = "xrdp" + str(tab_index + 1)
-        self.sessionsTab.widget(tab_index).findChild(QtGui.QLabel, 'sessionSectionName').setText(
+        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLabel, 'sessionSectionName').setText(
             "[" + section_name + "]")
-        namebox = self.sessionsTab.widget(tab_index).findChild(QtGui.QLineEdit, "sessionNameBox")
+        namebox = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLineEdit, "sessionNameBox")
         namebox.setText(value)
         namebox.editingFinished.connect(self.sessionNameBoxChanged)
         self.sessionsTab.setTabText(tab_index, value)
@@ -4471,11 +4472,11 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             if tab_index == 0:
                 self.setXrdpCheckboxVisibility()
             else:
-                self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, 'debugXRDPCheckbox').setVisible(False)
+                self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, 'debugXRDPCheckbox').setVisible(False)
             self.deleteSessionButton.setEnabled(True)
 
     def addSessionLib(self, tab_index, value):
-        lib_box = self.sessionsTab.widget(tab_index).findChild(QtGui.QComboBox, "libraryComboBox")
+        lib_box = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QComboBox, "libraryComboBox")
         if value == "libxup.so":
             lib_box.setCurrentIndex(0)
         if value == "libvnc.so":
@@ -4490,7 +4491,7 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         lib_box.currentIndexChanged.connect(self.tabLibraryComboBoxChanged)
 
     def setsessionserverbpp(self, tab_index, value):
-        bppbox = self.sessionsTab.widget(tab_index).findChild(QtGui.QComboBox, 'serverbppcombobox')
+        bppbox = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QComboBox, 'serverbppcombobox')
         if value == "15":
             bppbox.setCurrentIndex(1)
         if value == "16":
@@ -4501,14 +4502,14 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             bppbox.setCurrentIndex(4)
 
     def addSessionIP(self, tab_index, value):
-        sess_ip = self.sessionsTab.widget(tab_index).findChild(QtGui.QLineEdit, "sessionIPAddress")
+        sess_ip = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLineEdit, "sessionIPAddress")
         sess_ip.setText(value)
         sess_ip.editingFinished.connect(self.sessionIPAddressChanged)
 
     def addSessionPort(self, tab_index, value):
-        sess_port = self.sessionsTab.widget(tab_index).findChild(QtGui.QLineEdit, "sessionPortEntryBox")
-        chansrvport_widget = self.sessionsTab.widget(tab_index).findChild(QtGui.QLineEdit, "chansrvPortEntryBox")
-        chansrvport_label_widget = self.sessionsTab.widget(tab_index).findChild(QtGui.QLabel, "chansrvport_label")
+        sess_port = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLineEdit, "sessionPortEntryBox")
+        chansrvport_widget = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLineEdit, "chansrvPortEntryBox")
+        chansrvport_label_widget = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLabel, "chansrvport_label")
         if value == "/tmp/.xrdp/xrdp_display_10":
             self.xrdp_debug_checkbox.setCheckState(QtCore.Qt.CheckState(2))
             chansrvport_widget.setText("/tmp/.xrdp/xrdp_chansrv_socket_7210")
@@ -4521,12 +4522,12 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         sess_port.editingFinished.connect(self.sessionPortBoxChanged)
 
     def addSessionUsername(self, tab_index, value):
-        uname_widget = self.sessionsTab.widget(tab_index).findChild(QtGui.QLineEdit, "sessionUserNameEntryBox")
+        uname_widget = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLineEdit, "sessionUserNameEntryBox")
         uname_widget.setText(value)
         uname_widget.editingFinished.connect(self.sessionUsernameBoxChanged)
 
     def addSessionPassword(self, tab_index, value):
-        pass_widget = self.sessionsTab.widget(tab_index).findChild(QtGui.QLineEdit, "sessionPasswordEntryBox")
+        pass_widget = self.sessionsTab.widget(tab_index).findChild(QtWidgets.QLineEdit, "sessionPasswordEntryBox")
         pass_widget.setText(value)
         pass_widget.editingFinished.connect(self.sessionPasswordBoxChanged)
 
@@ -4552,69 +4553,69 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
                         self.addSessionPassword(tab_index, value)
                     elif name == "channel.rdpdr" and value == "true":
                         self.sessionsTab.widget(tab_index).findChild(QtGui.QFrame, "channelsFrame").setEnabled(True)
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "enableOverridesCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, "useRdpDrCheckBox").setCheckState(
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, "useRdpDrCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
                     elif name == "channel.rdpsnd" and value == "true":
                         self.sessionsTab.widget(tab_index).findChild(QtGui.QFrame, "channelsFrame").setEnabled(True)
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "enableOverridesCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "useRdpSndCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
                     elif name == "channel.drdynvc" and value == "true":
                         self.sessionsTab.widget(tab_index).findChild(QtGui.QFrame, "channelsFrame").setEnabled(True)
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "enableOverridesCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "useDrDynVcCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
                     elif name == "channel.cliprdr" and value == "true":
                         self.sessionsTab.widget(tab_index).findChild(QtGui.QFrame, "channelsFrame").setEnabled(True)
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "enableOverridesCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "useClipRdrCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
                     elif name == "channel.rail" and value == "true":
                         self.sessionsTab.widget(tab_index).findChild(QtGui.QFrame, "channelsFrame").setEnabled(True)
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "enableOverridesCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox, "useRAILCheckBox").setCheckState(
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox, "useRAILCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
                     elif name == "channel.xrdpvr" and value == "true":
                         self.sessionsTab.widget(tab_index).findChild(QtGui.QFrame, "channelsFrame").setEnabled(True)
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "enableOverridesCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
-                        self.sessionsTab.widget(tab_index).findChild(QtGui.QCheckBox,
+                        self.sessionsTab.widget(tab_index).findChild(QtWidgets.QCheckBox,
                                                                      "useXrdpVrCheckBox").setCheckState(
                             QtCore.Qt.CheckState(2))
                 self.sessionsOverrideUpdateActiveList(tab_index, "add")
                 self.sessionsOverrideAddToArray(tab_index)
-                self.sessionsTab.widget(tab_index).findChild(QtGui.QComboBox,
+                self.sessionsTab.widget(tab_index).findChild(QtWidgets.QComboBox,
                                                              'serverbppcombobox').currentIndexChanged.connect(
                     self.sessionbppcomboboxchanged)
                 tab_index += 1
             self.configuredSessionsLabel.setText(str(tab_index))
 
     def parseXrdpAutoRun(self):
-        if self.xrdp_ini_file.has_option('globals', 'autorun'):
+        if self.xrdp_ini_file.has_option('Globals', 'autorun'):
             self.autoRunComboBox.blockSignals(True)
-            value = self.xrdp_ini_file.get('globals', 'autorun')
+            value = self.xrdp_ini_file.get('Globals', 'autorun')
             count = self.autoRunComboBox.count()
             index = 0
             while value != self.autoRunComboBox.currentText():
                 self.autoRunComboBox.setCurrentIndex(index)
                 index += 1
                 if index > count:
-                    self.xrdp_ini_file.remove_option('globals', 'autorun')
+                    self.xrdp_ini_file.remove_option('Globals', 'autorun')
                     break
             self.autoRunComboBox.blockSignals(False)
 
@@ -4662,8 +4663,8 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
         # Parse the contents of the xrdp.ini file
         self.xrdp_ini_file.read(fname)
 
-        if self.xrdp_ini_file.has_option('globals', 'ini_version'):
-            if self.xrdp_ini_file.get('globals', 'ini_version') == '1':
+        if self.xrdp_ini_file.has_option('Globals', 'ini_version'):
+            if self.xrdp_ini_file.get('Globals', 'ini_version') == '1':
                 self.new_version_flag = 1
 
         #Initialize the Login Window Simulator...
@@ -4682,12 +4683,12 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
             message_window.exec_()
             self.addDefaultLoggingSection()
             self.parseXrdpLoggingSection()
-        #[CHANNELS] section...
-        if self.xrdp_ini_file.has_section("channels"):
+        #[Channels] section...
+        if self.xrdp_ini_file.has_section("Channels"):
             self.parseXrdpChannelsSection()
-        else:  # If no [channels] section, add one...
+        else:  # If no [Channels] section, add one...
             message_window = InfoWindow(
-                "<html><head/><body><p>This xrdp.ini file didn't have a [channels] section."
+                "<html><head/><body><p>This xrdp.ini file didn't have a [Channels] section."
                 "<p>A default one has been added.</p></body></html>")
             message_window.exec_()
             self.addDefaultChannelsSection()
@@ -5013,17 +5014,17 @@ class XRDPConfigurator(QtGui.QMainWindow, Ui_XRDPConfigurator):
 
     @staticmethod
     def resetPage(parent_widget):
-        types = [QtGui.QLineEdit, QtGui.QSpinBox, QtGui.QCheckBox, QtGui.QComboBox]
+        types = [QtWidgets.QLineEdit, QtWidgets.QSpinBox, QtWidgets.QCheckBox, QtWidgets.QComboBox]
         for reset_list in types:
             for widget in parent_widget.findChildren(reset_list):
-                if (reset_list == QtGui.QCheckBox) or (reset_list == QtGui.QComboBox):
+                if (reset_list == QtWidgets.QCheckBox) or (reset_list == QtWidgets.QComboBox):
                     widget.setStyleSheet("")
                 else:
                     widget.setStyleSheet("")
                     widget.clear()
 
 # xrdpconfigurator.setStyle("cleanlooks") <--Uncomment this, change to your chosen Qt look if you want it hard coded.
-xrdpconfigurator = QtGui.QApplication(sys.argv)
+xrdpconfigurator = QtWidgets.QApplication(sys.argv)
 window = XRDPConfigurator()
 window.setAttribute(QtCore.Qt.WA_DeleteOnClose)
 winSim = LoginWindowSimulator(None)
