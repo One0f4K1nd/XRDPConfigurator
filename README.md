@@ -1,3 +1,5 @@
+*Note I wanted this to work and then realized it was very old.  It does not do what I need even though its mostly working.  Someone may be able to finish and use this so I'm uploading some of the code changes I did.  My system is Ubuntu 21.10 Python 3.9 Pyside 2 Shinboken 2 all from the default repositories.
+
 XRDPConfigurator - Configure XRDP easily!
 =======================================
 
