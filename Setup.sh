@@ -1,5 +1,4 @@
 #!/bin/bash
-#
 echo "Compiling the User Interface files..."
 pyside-uic -d -o ./userInterface/XRDPConfiguratorMainWindow.py ./userInterface/XRDPConfiguratorMainWindow.ui
 pyside-uic -d -o ./userInterface/SessionFrame.py ./userInterface/SessionFrame.ui

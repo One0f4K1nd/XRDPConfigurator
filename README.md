@@ -1,5 +1,3 @@
-Starting to port this to newer system.  Partially working on Ubuntu 20.10 Python3.9 PySide2 Shinboken2.  You run ./Setup.sh to build modules, then run the main .sh file.
-
 XRDPConfigurator - Configure XRDP easily!
 =======================================
 

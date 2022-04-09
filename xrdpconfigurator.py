@@ -455,7 +455,7 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
         self.useXrdpVrCheckBox.clicked.connect(self.useXrdpVrChanged)
         self.userWindowManagerEntryBox.returnPressed.connect(self.userWindowManagerEntryBoxChanged)
         self.x11DisplayOffsetSpinBox.valueChanged.connect(self.x11DisplayOffsetSpinBoxChanged)
-        self.x11rdpParamsLineEdit.returnPressed.connect(self.xserverParamsChanged)
+        self.xorgParamsLineEdit.returnPressed.connect(self.xserverParamsChanged)
         self.xvncParamsLineEdit.returnPressed.connect(self.xserverParamsChanged)
         self.listeningPortEntryBox.editingFinished.connect(self.listeningportchanged)
         self.listeningAddressEntryBox.editingFinished.connect(self.listeningaddresschanged)
@@ -1154,7 +1154,7 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
             # set default values for new session according to connection type...
             index = self.newsesswindow.connectionTypeComboBox.currentIndex()
 
-            # X11rdp libxup.so
+            # Xorg libxup.so
             if index == 0:
                 self.addSessionLib(tab_index, "libxup.so")
                 self.addSessionIP(tab_index, "127.0.0.1")
@@ -4727,8 +4727,8 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
         self.parseSesmanSessionsSection()
         # Logging
         self.parseSesmanLoggingSection()
-        #X11rdp params
-        self.parseSesmanXServerParamSections("X11rdp")
+        #Xorg params
+        self.parseSesmanXServerParamSections("Xorg")
         # Xvnc params
         self.parseSesmanXServerParamSections("Xvnc")
 
@@ -4746,7 +4746,6 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
                 self.userWindowManagerEntryBox.setText(value)
             if name == "DefaultWindowManager":
                 self.defaultWindowManagerEntryBox.setText(value)
-
     def parseSesmanSecuritySection(self):
         for name, value in self.sesman_ini_file.items("Security"):
             if name == "AllowRootLogin":
@@ -4761,7 +4760,6 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
                 self.terminalServiceAdminsEntryBox.setText(value)
             if name == "AlwaysGroupCheck" and value == "true":
                 self.alwaysCheckGroupCheckBox.setCheckState(QtCore.Qt.CheckState(2))
-
     def parseSesmanSessionsSection(self):
         for name, value in self.sesman_ini_file.items("Sessions"):
             if name == "X11DisplayOffset":
@@ -4823,8 +4821,8 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
         for name, value in self.sesman_ini_file.items(secname):
             if "param" in name:
                 text = text + value + " "
-        if secname == "X11rdp":
-            self.x11rdpParamsLineEdit.setText(text)
+        if secname == "Xorg":
+            self.xorgParamsLineEdit.setText(text)
         elif secname == "Xvnc":
             self.xvncParamsLineEdit.setText(text)
 
@@ -4984,15 +4982,15 @@ class XRDPConfigurator(QtWidgets.QMainWindow, Ui_XRDPConfigurator):
         self.sesman_changed()
         self.sesmanSysLogLevelComboBox.setStyleSheet(self.combobox_changed_stylesheet)
 
-    # SESMAN [X11rdp] and [Xvnc]
+    # SESMAN [Xorg] and [Xvnc]
     # Turns the human-readable X11rdp and Xvnc back-end X server command line switches
     # into "paramX=" INI file format.
-    # Depending on the calling function (e.g. if the X11rdp or Xvnc line was altered), the function handles to suit.
+    # Depending on the calling function (e.g. if the Xorg or Xvnc line was altered), the function handles to suit.
     def xserverParamsChanged(self):
         calling_function = self.sender().objectName()
-        if calling_function == "x11rdpParamsLineEdit":
-            secname = "X11rdp"
-            widget = self.x11rdpParamsLineEdit
+        if calling_function == "xorgParamsLineEdit":
+            secname = "Xorg"
+            widget = self.xorgParamsLineEdit
         elif calling_function == "xvncParamsLineEdit":
             secname = "Xvnc"
             widget = self.xvncParamsLineEdit
